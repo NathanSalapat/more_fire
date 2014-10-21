@@ -1,0 +1,3 @@
+Flint image created by me with Blender.
+Charcoal_Lump created from the default_coal_lump that ships with minetest.
+campfire image from Esteban on the minetest forum licensed CC by SA

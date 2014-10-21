@@ -1,0 +1,8 @@
+10-19-14:
+Added the 'more_fire = {}' line and now the mod runs again, though the fire doesn't do anything when you right click on it.
+
+10-17-14:
+Renamed and relocated the git repository to match the forum topic
+Updated the fire so it can only be placed on the ground.
+Added flint that drops from gravel. Will be used for fire starters.
+Campfire now drops charcoal.
