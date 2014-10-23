@@ -77,6 +77,29 @@ minetest.register_node(':default:gravel', {
 	}),
 })
 
+minetest.register_node(':default:torch', {
+	description = 'Torch',
+	drawtype = 'mesh',
+	mesh = 'more_fire_torch.obj',
+	tiles = {'more_fire_torch.png'},
+	inventory_image = 'default_torch_on_floor.png',
+	wield_image = 'default_torch_on_floor.png',
+	paramtype = 'light',
+	paramtype2 = 'wallmounted',
+	sunlight_propagates = true,
+	is_ground_content = false,
+	walkable = false,
+	light_source = LIGHT_MAX-1,
+	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
+	legacy_wallmounted = true,
+	sounds = default.node_sound_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-1/11, -1/2, -1/11, 1/11, 1/3, 1/11},
+	},
+})
+	
+
 minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
 	tiles = {'default_coal_block.png'},
@@ -86,9 +109,9 @@ minetest.register_node('more_fire:charcoal_block', {
 
 minetest.register_node('more_fire:campfire', {
 	description = 'Campfire',
-	drawtype = 'plantlike',
-	waving = 1,
-	tiles = {'more_fire_campfire.png'},
+	drawtype = 'mesh',
+	mesh = 'more_fire_campfire.obj',
+	tiles = {'more_fire_campfire.png', 'campfire.png'},
 	inventory_image = 'more_fire_campfire.png',
 	wield_image = 'more_fire_campfire.png',
 	paramtype = 'light',
@@ -123,7 +146,6 @@ minetest.register_node('more_fire:campfire', {
 		if listname == 'fuel' then
 			if inv:is_empty('fuel') then
 				meta:set_string("infotext","Campfire is out of wood.")
-				light_source = 2
 				return stack:get_count()
 			else
 				return 0
@@ -138,10 +160,9 @@ minetest.register_node('more_fire:campfire', {
 		local inv = meta:get_inventory()
 		local stack = inv:get_stack(from_list, from_index)
 		if to_list == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
+			if minetest.get_craft_result({method="fuel",width=4,items={stack}}).time ~= 0 then
 				if inv:is_empty("fuel") then
 					meta:set_string("infotext","Campfire is out of wood.")
-					light_source = 2
 				end
 				return count
 			else
@@ -159,11 +180,11 @@ minetest.register_node('more_fire:campfire', {
 
 minetest.register_node('more_fire:contained_fire', {
 	description = 'Contained Campfire',
-	drawtype = 'plantlike',
-	waving = 1,
-	tiles = {'more_fire_campfire_contained.png'},
-	inventory_image = 'more_fire_campfire.png',
-	wield_image = 'more_fire_campfire.png',
+	drawtype = 'mesh',
+	mesh = 'more_fire_contained_campfire.obj',
+	tiles = {'campfire.png'},
+	inventory_image = 'more_fire_campfire_contained.png',
+	wield_image = 'more_fire_campfire_contained.png',
 	paramtype = 'light',
 	walkable = false,
 	buildable_to = true,
