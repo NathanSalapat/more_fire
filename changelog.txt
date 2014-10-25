@@ -1,3 +1,7 @@
+10-24-14:
+Campfires now have animated fire. Turns out that I was exporting the file wrong. :S
+
+
 10-22-14:
 Added 3d models for the torch and campfires. Textures aren't perfect on the campfire yet.
 

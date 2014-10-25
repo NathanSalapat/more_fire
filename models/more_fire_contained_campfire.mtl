@@ -1,7 +1,7 @@
 # Blender MTL File: 'campfire.blend'
-# Material Count: 1
+# Material Count: 2
 
-newmtl Campfire
+newmtl Fire
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
 Kd 0.640000 0.640000 0.640000
@@ -9,5 +9,15 @@ Ks 0.000000 0.000000 0.000000
 Ni 1.000000
 d 0.000000
 illum 1
-map_Kd /home/nathan/.minetest/mods/more_fire/textures/more_fire_campfire.png
-map_d /home/nathan/.minetest/mods/more_fire/textures/more_fire_campfire.png
+map_Kd /home/nathan/.minetest/mods/more_fire/textures/fire_basic_flame_animated.png
+map_d /home/nathan/.minetest/mods/more_fire/textures/fire_basic_flame_animated.png
+
+newmtl Logs-Stone
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd /home/nathan/.minetest/mods/more_fire/textures/more_fire_campfire_logs.png

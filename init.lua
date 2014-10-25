@@ -42,6 +42,7 @@ function more_fire.get_campfire_active_formspec(pos, percent)
        
         return more_fire.campfire_active(pos, percent, item_percent)
 end
+
   
 -- formspecs
 more_fire.campfire_inactive_formspec =
@@ -80,17 +81,18 @@ minetest.register_node(':default:gravel', {
 minetest.register_node(':default:torch', {
 	description = 'Torch',
 	drawtype = 'mesh',
-	mesh = 'more_fire_torch.obj',
+	mesh = 'more_fire_torch_wall.obj',
 	tiles = {'more_fire_torch.png'},
 	inventory_image = 'default_torch_on_floor.png',
 	wield_image = 'default_torch_on_floor.png',
 	paramtype = 'light',
-	paramtype2 = 'wallmounted',
+	paramtype2 = 'facedir',
 	sunlight_propagates = true,
 	is_ground_content = false,
 	walkable = false,
 	light_source = LIGHT_MAX-1,
 	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
+	drop = 'default:torch',
 	legacy_wallmounted = true,
 	sounds = default.node_sound_defaults(),
 	selection_box = {
@@ -111,12 +113,13 @@ minetest.register_node('more_fire:campfire', {
 	description = 'Campfire',
 	drawtype = 'mesh',
 	mesh = 'more_fire_campfire.obj',
-	tiles = {'more_fire_campfire.png', 'campfire.png'},
+	tiles = {
+		{name='fire_basic_flame_animated.png', animation={type='vertical_frames', aspect_w=16, aspect_h=16, length=1}}, {name='more_fire_campfire_logs.png'}},
 	inventory_image = 'more_fire_campfire.png',
 	wield_image = 'more_fire_campfire.png',
 	paramtype = 'light',
 	walkable = false,
-	buildable_to = true,
+	buildable_to = false,
 	damage_per_second = 1,
 	drop = 'more_fire:charcoal',
 	light_source = 20,
@@ -182,12 +185,12 @@ minetest.register_node('more_fire:contained_fire', {
 	description = 'Contained Campfire',
 	drawtype = 'mesh',
 	mesh = 'more_fire_contained_campfire.obj',
-	tiles = {'campfire.png'},
+	tiles = {
+		{name='fire_basic_flame_animated.png', animation={type='vertical_frames', aspect_w=16, aspect_h=16, length=1}}, {name='more_fire_campfire_logs.png'}},
 	inventory_image = 'more_fire_campfire_contained.png',
 	wield_image = 'more_fire_campfire_contained.png',
 	paramtype = 'light',
 	walkable = false,
-	buildable_to = true,
 	damage_per_second = 1,
 	drop = 'more_fire:charcoal',
 	light_source = 20,
