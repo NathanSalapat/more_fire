@@ -1,3 +1,8 @@
+Textures:
 Flint image created by me with Blender.
 Charcoal_Lump created from the default_coal_lump that ships with minetest.
-campfire image from Esteban on the minetest forum licensed CC by SA
+campfire inventory image from Esteban on the minetest forum licensed CC by SA
+
+Code:
+Torch rotation by addi, shamelessly copied from the 3d_torches mod.
+

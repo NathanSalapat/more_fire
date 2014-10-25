@@ -43,6 +43,62 @@ function more_fire.get_campfire_active_formspec(pos, percent)
         return more_fire.campfire_active(pos, percent, item_percent)
 end
 
+-- Copied from the 3d_torch mod, changed a few things, and removed a couple lines.
+local function placeTorch(itemstack, placer, pointed_thing)
+			if pointed_thing.type ~= "node" then
+				return itemstack
+			end
+
+			local p0 = pointed_thing.under
+			local p1 = pointed_thing.above
+			local param2 = 0
+
+			local dir = {
+				x = p1.x - p0.x,
+				y = p1.y - p0.y,
+				z = p1.z - p0.z
+			}
+			param2 = minetest.dir_to_facedir(dir,false)
+			local correct_rotation={
+				[0]=3,
+				[1]=0,
+				[2]=1,
+				[3]=2
+			}
+			if p0.y<p1.y then
+			--place torch on floor
+			minetest.add_node(p1, {name="more_fire:torch"})
+			else
+			--place torch on wall
+			minetest.add_node(p1, {name="more_fire:torch_wall",param2=correct_rotation[param2]})
+			--return minetest.item_place(itemstack, placer, pointed_thing, param2)
+			end
+			itemstack:take_item()
+			return itemstack
+						
+end
+
+-- abm that converts the already placed torches to the 3d ones copied from the 3d_torches mod
+minetest.register_abm({
+	nodenames = {"default:torch"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node)
+		local convert_facedir={
+			[2]=2,
+			[3]=0,
+			[4]=1,
+			[5]=3
+			
+		}
+		print(node.param2)
+		if node.param2 == 1 then
+		minetest.swap_node(pos, {name="more_fire:torch"})
+		else
+		minetest.swap_node(pos, {name="more_fire:torch_wall",param2=convert_facedir[node.param2]})
+		end
+	end,
+})
   
 -- formspecs
 more_fire.campfire_inactive_formspec =
@@ -78,7 +134,29 @@ minetest.register_node(':default:gravel', {
 	}),
 })
 
-minetest.register_node(':default:torch', {
+minetest.register_node('more_fire:torch', {
+	description = 'Torch',
+	drawtype = 'mesh',
+	mesh = 'more_fire_torch.obj',
+	tiles = {'more_fire_torch.png'},
+	inventory_image = 'default_torch_on_floor.png',
+	wield_image = 'default_torch_on_floor.png',
+	paramtype = 'light',
+	paramtype2 = 'facedir',
+	sunlight_propagates = true,
+	is_ground_content = false,
+	walkable = false,
+	light_source = LIGHT_MAX-1,
+	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
+	drop = 'default:torch',
+	sounds = default.node_sound_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-1/11, -1/2, -1/11, 1/11, 1/3, 1/11},
+	},
+})
+
+minetest.register_node('more_fire:torch_wall', {
 	description = 'Torch',
 	drawtype = 'mesh',
 	mesh = 'more_fire_torch_wall.obj',
@@ -93,11 +171,10 @@ minetest.register_node(':default:torch', {
 	light_source = LIGHT_MAX-1,
 	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
 	drop = 'default:torch',
-	legacy_wallmounted = true,
 	sounds = default.node_sound_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-1/11, -1/2, -1/11, 1/11, 1/3, 1/11},
+		fixed = {-0.5, -0.3, -0.1, -0.5+0.3, 0.3, 0.1},
 	},
 })
 	
@@ -119,7 +196,6 @@ minetest.register_node('more_fire:campfire', {
 	wield_image = 'more_fire_campfire.png',
 	paramtype = 'light',
 	walkable = false,
-	buildable_to = false,
 	damage_per_second = 1,
 	drop = 'more_fire:charcoal',
 	light_source = 20,

@@ -1,6 +1,9 @@
+10-25-14:
+Torches stick to the wall or the floor according as they should. Copied code from the 3d_torch mod.
+
+
 10-24-14:
 Campfires now have animated fire. Turns out that I was exporting the file wrong. :S
-
 
 10-22-14:
 Added 3d models for the torch and campfires. Textures aren't perfect on the campfire yet.
