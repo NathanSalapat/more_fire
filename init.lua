@@ -1,5 +1,4 @@
 -- A couple variables used throughout.
-LIGHT_MAX = 14
 percent = 100
 -- GUI related stuff
 default.gui_bg = "bgcolor[#080808BB;true]"
@@ -41,6 +40,15 @@ function more_fire.get_campfire_active_formspec(pos, percent)
 	end
        
         return more_fire.campfire_active(pos, percent, item_percent)
+end
+
+function burn(pointed_thing) --kindling doesn't always start from the first spark
+	ignite_chance = math.random(5)
+	print (ignite_chance, 'ignite chance')
+	if ignite_chance == 1 then
+		minetest.env:swap_node(pointed_thing.under, {name = 'more_fire:campfire'})
+	else --do nothing
+	end
 end
 
 -- Copied from the 3d_torch mod, changed a few things, and removed a couple lines.
@@ -178,7 +186,6 @@ minetest.register_node('more_fire:torch_wall', {
 	},
 })
 	
-
 minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
 	tiles = {'default_coal_block.png'},
@@ -198,7 +205,7 @@ minetest.register_node('more_fire:campfire', {
 	walkable = false,
 	damage_per_second = 1,
 	drop = 'more_fire:charcoal',
-	light_source = 20,
+	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3,igniter=1},
 	on_construct = function(pos)
@@ -269,9 +276,22 @@ minetest.register_node('more_fire:contained_fire', {
 	walkable = false,
 	damage_per_second = 1,
 	drop = 'more_fire:charcoal',
-	light_source = 20,
+	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3},
+})
+
+minetest.register_node('more_fire:kindling', {
+	description = 'Kindling',
+	drawtype = 'mesh',
+	mesh = 'more_fire_kindling.obj',
+	tiles = {'more_fire_campfire_logs.png'},
+	inventory_image = 'more_fire_kindling.png',
+	wield_image = 'more_fire_kindling.png',
+	walkable = false,
+	is_ground_content = true,
+	groups = {dig_immediate=3,flammable=1},
+	paramtype = 'light',
 })
 
 -- craft items
@@ -284,6 +304,11 @@ minetest.register_craftitem('more_fire:charcoal', {
 minetest.register_craftitem('more_fire:flintstone', {
 	description = 'Flintstone',
 	inventory_image = 'more_fire_flintstone.png',
+})
+
+minetest.register_craftitem('more_fire:lighter', {
+	description = 'Flint and Steel',
+	inventory_image = 'more_fire_lighter.png',
 })
 
 -- craft recipes
@@ -322,6 +347,18 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = 'shapeless',
+	output = 'more_fire:kindling 1',
+	recipe = {'group:stick', 'group:wood', 'group:flammable', 'group:flammable'},
+})
+
+minetest.register_craft({
+	type = 'shapeless',
+	output = 'more_fire:lighter 1',
+	recipe = {'more_fire:flintstone', 'default:steel_ingot'}
+})
+
 -- cooking recipes
 minetest.register_craft({
 	type = 'cooking',
@@ -342,3 +379,25 @@ minetest.register_craft({
 	burntime = 315,
 })
 
+-- tools
+minetest.register_tool('more_fire:lighter', {
+	description = 'Lighter',
+	inventory_image = 'more_fire_lighter.png',
+	stack_max = 1,
+	tool_capabilities = {
+		full_punch_interval = 1.0,
+		max_drop_level = 0,
+		groupcaps = {
+			flammable = {uses = 65, maxlevel = 1},
+		}
+	},
+	on_use = function(itemstack, user, pointed_thing, pos)
+		if pointed_thing.type == 'node'
+			and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
+			then
+				burn(pointed_thing)
+				itemstack:add_wear(65535/65)
+				return itemstack
+			end
+	end,
+})
