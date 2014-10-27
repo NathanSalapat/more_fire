@@ -1,6 +1,13 @@
+10-27-14:
+Made the torches a tad bit smaller.
+Removed all the formspec stuff from the campfires. I couldn't get them to work, so I'll come back to that when I learn more of the coding needed.
+Removed the .mlt files from the models folder as I discovered they aren't needed and just give errors in the debug.
+
+10-26-14:
+Added kindling, craft it from a stick, wood, and two other flammable grouped items. Light it with the lighter, which is made with flint and steel.
+
 10-25-14:
 Torches stick to the wall or the floor according as they should. Copied code from the 3d_torch mod.
-
 
 10-24-14:
 Campfires now have animated fire. Turns out that I was exporting the file wrong. :S

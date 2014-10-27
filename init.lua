@@ -1,50 +1,5 @@
--- A couple variables used throughout.
-percent = 100
--- GUI related stuff
-default.gui_bg = "bgcolor[#080808BB;true]"
-default.gui_bg_img = "background[5,5;1,1;gui_formbg.png;true]"
-default.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
-more_fire = {}
-
--- functions
-function default.get_hotbar_bg(x,y)
-	local out = ""
-	for i=0,7,1 do
-		out = out .."image["..x+i..","..y..";1,1;gui_hb_bg.png]"
-	end
-	return out
-end
-
-function more_fire.campfire_active(pos, percent, item_percent)
-    local formspec = 
-	"size[8,6.75]"..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	"list[current_name;fuel;2,1.5;4,1;]"..
-	"list[current_player;main;0,2.75;8,1;]"..
-	"list[current_player;main;0,4;8,3;8]"..
-	default.get_hotbar_bg(0,2.75)
-    return formspec
-  end
-  
-function more_fire.get_campfire_active_formspec(pos, percent)
-	local meta = minetest.get_meta(pos)local inv = meta:get_inventory()
-	local fuellist = inv:get_list("fuel")
-	if fuellist then
-		
-	end
-	local item_percent = 0
-	if cooked then
-		item_percent = meta:get_float("src_time")/cooked.time
-	end
-       
-        return more_fire.campfire_active(pos, percent, item_percent)
-end
-
 function burn(pointed_thing) --kindling doesn't always start from the first spark
 	ignite_chance = math.random(5)
-	print (ignite_chance, 'ignite chance')
 	if ignite_chance == 1 then
 		minetest.env:swap_node(pointed_thing.under, {name = 'more_fire:campfire'})
 	else --do nothing
@@ -107,17 +62,6 @@ minetest.register_abm({
 		end
 	end,
 })
-  
--- formspecs
-more_fire.campfire_inactive_formspec =
-	"size[8,6.75]"..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	"list[current_name;fuel;2,1.5;4,1;]"..
-	"list[current_player;main;0,2.75;8,1;]"..
-	"list[current_player;main;0,4;8,3;8]"..
-	default.get_hotbar_bg(0,2.75)
 
 -- node definitions
 minetest.register_node(':default:gravel', {
@@ -208,60 +152,6 @@ minetest.register_node('more_fire:campfire', {
 	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3,igniter=1},
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		meta:set_string('formspec', more_fire.campfire_inactive_formspec)
-		meta:set_string('infotext', 'Campfire')
-		local inv = meta:get_inventory()
-		inv:set_size('fuel', 4)
-	end,
-	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
-		local inv = meta:get_inventory()
-		if not inv:is_empty('fuel') then
-			return false
-		end
-		return true
-	end,
-	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if minetest.is_protected(pos, player:get_player_name()) then
-			return 0
-		end
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		if listname == 'fuel' then
-			if inv:is_empty('fuel') then
-				meta:set_string("infotext","Campfire is out of wood.")
-				return stack:get_count()
-			else
-				return 0
-			end
-		end
-	end,
-	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		if minetest.is_protected(pos, player:get_player_name()) then
-			return 0
-		end
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		local stack = inv:get_stack(from_list, from_index)
-		if to_list == "fuel" then
-			if minetest.get_craft_result({method="fuel",width=4,items={stack}}).time ~= 0 then
-				if inv:is_empty("fuel") then
-					meta:set_string("infotext","Campfire is out of wood.")
-				end
-				return count
-			else
-				return 0
-			end
-		end
-	end,
-	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-		if minetest.is_protected(pos, player:get_player_name()) then
-			return 0
-		end
-		return stack:get_count()
-	end,
 })
 
 minetest.register_node('more_fire:contained_fire', {
@@ -388,7 +278,7 @@ minetest.register_tool('more_fire:lighter', {
 		full_punch_interval = 1.0,
 		max_drop_level = 0,
 		groupcaps = {
-			flammable = {uses = 65, maxlevel = 1},
+			flammable = {uses = 80, maxlevel = 1},
 		}
 	},
 	on_use = function(itemstack, user, pointed_thing, pos)
@@ -396,7 +286,7 @@ minetest.register_tool('more_fire:lighter', {
 			and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
 			then
 				burn(pointed_thing)
-				itemstack:add_wear(65535/65)
+				itemstack:add_wear(65535/80)
 				return itemstack
 			end
 	end,
