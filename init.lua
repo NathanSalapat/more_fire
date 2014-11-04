@@ -214,6 +214,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'more_fire:campfire 1',
 	recipe = {
+		{'more_fire:kindling'},
+		{'default:torch'},
+	}
+})
+
+minetest.register_craft({
+	output = 'more_fire:campfire 1',
+	recipe = {
 		{'', '', ''},
 		{'default:stick', 'default:torch', 'default:stick'},
 		{'group:wood', 'group:wood', 'group:wood'},
@@ -225,6 +233,15 @@ minetest.register_craft({
 	recipe = {
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 		{'default:cobble', 'more_fire:campfire', 'default:cobble'},
+		{'default:cobble', 'default:cobble', 'default:cobble'},
+	}
+})
+
+minetest.register_craft({
+	output = 'more_fire:contained_fire 1',
+	recipe = {
+		{'', '', ''},
+		{'', 'more_fire:campfire', ''},
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 	}
 })
