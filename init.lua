@@ -132,7 +132,7 @@ minetest.register_node('more_fire:torch_wall', {
 	
 minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
-	tiles = {'default_coal_block.png'},
+	tiles = {'more_fire_charcoal_block.png'},
 	is_ground_content = true,
 	groups = {oddly_breakable_by_hand=2,cracky=3},
 })
@@ -233,15 +233,6 @@ minetest.register_craft({
 	recipe = {
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 		{'default:cobble', 'more_fire:campfire', 'default:cobble'},
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-	}
-})
-
-minetest.register_craft({
-	output = 'more_fire:contained_fire 1',
-	recipe = {
-		{'', '', ''},
-		{'', 'more_fire:campfire', ''},
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 	}
 })

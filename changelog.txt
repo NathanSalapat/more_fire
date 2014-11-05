@@ -1,3 +1,9 @@
+11-05-14:
+Corrected the texture for the Charcoal Block.
+
+11-04-14:
+Added recipe for fire that uses torch and kindling.
+
 10-27-14:
 Made the torches a tad bit smaller.
 Removed all the formspec stuff from the campfires. I couldn't get them to work, so I'll come back to that when I learn more of the coding needed.
