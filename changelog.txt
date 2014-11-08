@@ -1,5 +1,10 @@
+11-08-14:
+Added a kindling that will created contained fire.
+Updated the lighter to turn the two different kindling into the two different fires.
+
 11-05-14:
 Corrected the texture for the Charcoal Block.
+Added recipe to turn charcoal block back into charcoal lumps.
 
 11-04-14:
 Added recipe for fire that uses torch and kindling.

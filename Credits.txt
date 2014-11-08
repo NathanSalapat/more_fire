@@ -5,6 +5,9 @@ campfire inventory image from Esteban on the minetest forum licensed CC by SA
 Kindling inventory image created by modifying Esteban's campfire image.
 Lighter image created by me with Blender.
 
+
 Code:
 Torch rotation by addi, shamelessly copied from the 3d_torches mod.
 
+Inspiration:
+Napiophelios, from the forum, who gave me some really good ideas from the old campfire mod, which I didn't even know about.

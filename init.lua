@@ -1,7 +1,22 @@
+-- A couple variables used throughout.
+percent = 100
+-- GUI related stuff
+default.gui_bg = "bgcolor[#080808BB;true]"
+default.gui_bg_img = "background[5,5;1,1;gui_formbg.png;true]"
+default.gui_slots = "listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]"
+campfire = {}
+
 function burn(pointed_thing) --kindling doesn't always start from the first spark
-	ignite_chance = math.random(5)
-	if ignite_chance == 1 then
-		minetest.env:swap_node(pointed_thing.under, {name = 'more_fire:campfire'})
+	ignite_chance = math.random(10)
+	if ignite_chance == 1
+		and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling_contained')
+		then
+			minetest.env:swap_node(pointed_thing.under, {name = 'more_fire:contained_fire'})
+	elseif ignite_chance == 1
+		and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
+		then
+			minetest.env:swap_node(pointed_thing.under, {name = 'more_fire:campfire'})
+
 	else --do nothing
 	end
 end
@@ -44,7 +59,7 @@ end
 -- abm that converts the already placed torches to the 3d ones copied from the 3d_torches mod
 minetest.register_abm({
 	nodenames = {"default:torch"},
-	interval = 1,
+	interval = 1.0,
 	chance = 1,
 	action = function(pos, node)
 		local convert_facedir={
@@ -152,6 +167,10 @@ minetest.register_node('more_fire:campfire', {
 	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3,igniter=1},
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
+		},
 })
 
 minetest.register_node('more_fire:contained_fire', {
@@ -169,6 +188,10 @@ minetest.register_node('more_fire:contained_fire', {
 	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3},
+		selection_box = {
+		type = "fixed",
+		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
+		},
 })
 
 minetest.register_node('more_fire:kindling', {
@@ -182,6 +205,27 @@ minetest.register_node('more_fire:kindling', {
 	is_ground_content = true,
 	groups = {dig_immediate=3,flammable=1},
 	paramtype = 'light',
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
+		},
+})
+
+minetest.register_node('more_fire:kindling_contained', {
+	description = 'Contained Kindling',
+	drawtype = 'mesh',
+	mesh = 'more_fire_kindling_contained.obj',
+	tiles = {'more_fire_campfire_logs.png'},
+	inventory_image = 'more_fire_kindling_contained.png',
+	wield_image = 'more_fire_kindling.png',
+	walkable = false,
+	is_ground_content = true,
+	groups = {dig_immediate=3,flammable=1},
+	paramtype = 'light',
+	selection_box = {
+		type = "fixed",
+		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
+		},
 })
 
 -- craft items
@@ -208,6 +252,13 @@ minetest.register_craft({
 		{'more_fire:charcoal', 'more_fire:charcoal', 'more_fire:charcoal'},
 		{'more_fire:charcoal', 'more_fire:charcoal', 'more_fire:charcoal'},
 		{'more_fire:charcoal', 'more_fire:charcoal', 'more_fire:charcoal'},
+	}
+})
+
+minetest.register_craft({
+	output = 'more_fire:charcoal 9',
+	recipe = {
+		{'more_fire:charcoal_block'}
 	}
 })
 
@@ -249,6 +300,14 @@ minetest.register_craft({
 	type = 'shapeless',
 	output = 'more_fire:kindling 1',
 	recipe = {'group:stick', 'group:wood', 'group:flammable', 'group:flammable'},
+})
+
+minetest.register_craft({
+	output = 'more_fire:kindling_contained 1',
+	recipe = {
+		{'','more_fire:kindling', ''},
+		{'default:cobble','default:cobble','default:cobble'},
+		}
 })
 
 minetest.register_craft({
