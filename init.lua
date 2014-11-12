@@ -38,7 +38,7 @@ function more_fire.get_campfire_formspec(pos, percent)
 end
 
 function burn(pointed_thing) --kindling doesn't always start from the first spark
-	ignite_chance = math.random(7)
+	ignite_chance = math.random(5)
 	if ignite_chance == 1
 		and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling_contained')
 		then
@@ -49,40 +49,6 @@ function burn(pointed_thing) --kindling doesn't always start from the first spar
 			minetest.swap_node(pointed_thing.under, {name = 'more_fire:embers'})
 	else --Do nothing
 	end
-end
-
-local function placeTorch(itemstack, placer, pointed_thing) -- Copied from 3d_torch mod, changed a few things, and removed a couple lines.
-			if pointed_thing.type ~= 'node' then
-				return itemstack
-			end
-
-			local p0 = pointed_thing.under
-			local p1 = pointed_thing.above
-			local param2 = 0
-
-			local dir = {
-				x = p1.x - p0.x,
-				y = p1.y - p0.y,
-				z = p1.z - p0.z
-			}
-			param2 = minetest.dir_to_facedir(dir,false)
-			local correct_rotation={
-				[0]=3,
-				[1]=0,
-				[2]=1,
-				[3]=2
-			}
-			if p0.y<p1.y then
-			--place torch on floor
-			minetest.add_node(p1, {name='more_fire:torch'})
-			else
-			--place torch on wall
-			minetest.add_node(p1, {name='more_fire:torch_wall',param2=correct_rotation[param2]})
-			--return minetest.item_place(itemstack, placer, pointed_thing, param2)
-			end
-			itemstack:take_item()
-			return itemstack
-						
 end
 
 
@@ -100,27 +66,6 @@ default.gui_slots..
 default.get_hotbar_bg(0,2.75)
 
 -- ABMs
-minetest.register_abm({  -- Converts already placed torches to 3d ones copied from the 3d_torches mod.
-	nodenames = {'default:torch'},
-	interval = 1.0,
-	chance = 1,
-	action = function(pos, node)
-		local convert_facedir={
-			[2]=2,
-			[3]=0,
-			[4]=1,
-			[5]=3
-			
-		}
-		print(node.param2)
-		if node.param2 == 1 then
-		minetest.swap_node(pos, {name='more_fire:torch'})
-		else
-		minetest.swap_node(pos, {name='more_fire:torch_wall',param2=convert_facedir[node.param2]})
-		end
-	end,
-})
-
 minetest.register_abm({  -- Controls non-contained fire
 	nodenames = {'more_fire:embers','more_fire:campfire'},
 	interval = 1.0,
@@ -258,47 +203,31 @@ minetest.register_node(':default:gravel', {
 	}),
 })
 
-minetest.register_node('more_fire:torch', {
+minetest.register_node(':default:torch', {
 	description = 'Torch',
 	drawtype = 'mesh',
-	mesh = 'more_fire_torch.obj',
 	tiles = {'more_fire_torch.png'},
 	inventory_image = 'default_torch_on_floor.png',
 	wield_image = 'default_torch_on_floor.png',
 	paramtype = 'light',
-	paramtype2 = 'facedir',
+	paramtype2 = 'wallmounted',
 	sunlight_propagates = true,
 	is_ground_content = false,
 	walkable = false,
 	light_source = LIGHT_MAX-1,
 	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
-	drop = 'default:torch',
 	sounds = default.node_sound_defaults(),
-	selection_box = {
-		type = 'fixed',
-		fixed = {-1/11, -1/2, -1/11, 1/11, 1/3, 1/11},
+	mesh = {
+		type = 'wallmounted',
+		wall_top = 'more_fire_torch.obj',
+		wall_bottom = 'more_fire_campfire.obj',
+		wall_side = 'more_fire_torch_wall.obj',
 	},
-})
-
-minetest.register_node('more_fire:torch_wall', {
-	description = 'Torch',
-	drawtype = 'mesh',
-	mesh = 'more_fire_torch_wall.obj',
-	tiles = {'more_fire_torch.png'},
-	inventory_image = 'default_torch_on_floor.png',
-	wield_image = 'default_torch_on_floor.png',
-	paramtype = 'light',
-	paramtype2 = 'facedir',
-	sunlight_propagates = true,
-	is_ground_content = false,
-	walkable = false,
-	light_source = LIGHT_MAX-1,
-	groups = {choppy=2,dig_immediate=3,flammable=1,attached_node=1,hot=2},
-	drop = 'default:torch',
-	sounds = default.node_sound_defaults(),
 	selection_box = {
-		type = 'fixed',
-		fixed = {-0.5, -0.3, -0.1, -0.5+0.3, 0.3, 0.1},
+		type = "wallmounted",
+		wall_top    = {-0.25, -0.0625, -0.25, 0.25, 0.5   , 0.25},
+		wall_bottom = {-0.25, -0.5   , -0.25, 0.25, 0.0625, 0.25},
+		wall_side   = {-0.25, -0.5  , -0.25, -0.5, 0.0625, 0.25},
 	},
 })
 	
@@ -306,7 +235,7 @@ minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
 	tiles = {'more_fire_charcoal_block.png'},
 	is_ground_content = true,
-	groups = {oddly_breakable_by_hand=2,cracky=3},
+	groups = {oddly_breakable_by_hand=2,cracky=3,flammable=1,},
 })
 
 minetest.register_node('more_fire:kindling', {
@@ -408,7 +337,7 @@ minetest.register_node('more_fire:kindling_contained', {
 })
 
 minetest.register_node('more_fire:embers_contained', {
-	description = 'embers',
+	description = 'Contained Campfire',
 	drawtype = 'mesh',
 	mesh = 'more_fire_kindling_contained.obj',
 	tiles = {'more_fire_campfire_logs.png'},
@@ -525,8 +454,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'more_fire:embers_contained 1',
 	recipe = {
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-		{'default:cobble', 'more_fire:campfire', 'default:cobble'},
+		{'', 'more_fire:embers', ''},
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 	}
 })
@@ -588,7 +516,7 @@ minetest.register_tool('more_fire:lighter', {
 		full_punch_interval = 1.0,
 		max_drop_level = 0,
 		groupcaps = {
-			flammable = {uses = 80, maxlevel = 1},
+			flammable = {uses = 120, maxlevel = 1},
 		}
 	},
 	on_use = function(itemstack, user, pointed_thing, pos)
@@ -596,7 +524,7 @@ minetest.register_tool('more_fire:lighter', {
 			and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
 			then
 				burn(pointed_thing)
-				itemstack:add_wear(65535/80)
+				itemstack:add_wear(65535/120)
 				return itemstack
 			end
 	end,

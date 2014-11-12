@@ -1,3 +1,10 @@
+11-12-14:
+Removed the ABM for torches, and replaced the two nodes with just one.
+Tweaked the lighter, it should last longer and light fires faster.
+
+11-11-14:
+Charcoal blocks are now flammable.
+
 11-08-14:
 Added a kindling that will created contained fire.
 Updated the lighter to turn the two different kindling into the two different fires.
