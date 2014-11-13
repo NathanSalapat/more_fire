@@ -11,3 +11,7 @@ Torch rotation by addi, shamelessly copied from the 3d_torches mod.
 
 Inspiration:
 Napiophelios, from the forum, who gave me some really good ideas from the old campfire mod, which I didn't even know about.
+
+Sound Effects:
+Sparker sound from BroAsis on Freesound. https://www.freesound.org/people/BroAsis/sounds/106853/
+

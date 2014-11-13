@@ -1,6 +1,7 @@
 11-12-14:
 Removed the ABM for torches, and replaced the two nodes with just one.
-Tweaked the lighter, it should last longer and light fires faster.
+Tweaked the lighter, it should last longer and light fires faster. Added a sparking sound effect as well.
+The lighter takes damage every time it is used, regardless of if it starts a fire, or is used on kindling.
 
 11-11-14:
 Charcoal blocks are now flammable.

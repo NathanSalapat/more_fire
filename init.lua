@@ -77,7 +77,7 @@ minetest.register_abm({  -- Controls non-contained fire
 		'fuel_time',
 		}) do
 		if meta:get_string(name) == '' then
-			meta:set_float(name, 0.0)
+			meta:set_float(name, 5.0)
 			end
 		end
 		local meta = minetest.get_meta(pos)
@@ -219,15 +219,15 @@ minetest.register_node(':default:torch', {
 	sounds = default.node_sound_defaults(),
 	mesh = {
 		type = 'wallmounted',
-		wall_top = 'more_fire_torch.obj',
-		wall_bottom = 'more_fire_campfire.obj',
+		wall_top = 'more_fire_campfire.obj',
+		wall_bottom = 'more_fire_torch.obj',
 		wall_side = 'more_fire_torch_wall.obj',
 	},
 	selection_box = {
 		type = "wallmounted",
-		wall_top    = {-0.25, -0.0625, -0.25, 0.25, 0.5   , 0.25},
-		wall_bottom = {-0.25, -0.5   , -0.25, 0.25, 0.0625, 0.25},
-		wall_side   = {-0.25, -0.5  , -0.25, -0.5, 0.0625, 0.25},
+		wall_top    = {-0.25, -0.5   , -0.25, 0.25, 0.0625, 0.25},
+		wall_bottom = {-1/11, -1/2, -1/11, 1/11, 1/3, 1/11},
+		wall_side   = {-0.5, -0.3, -0.1, -0.5+0.3, 0.3, 0.1},
 	},
 })
 	
@@ -247,7 +247,7 @@ minetest.register_node('more_fire:kindling', {
 	wield_image = 'more_fire_kindling.png',
 	walkable = false,
 	is_ground_content = true,
-	groups = {dig_immediate=3, flammable=1,},
+	groups = {dig_immediate=2, flammable=1,},
 	paramtype = 'light',
 	selection_box = {
 		type = 'fixed',
@@ -264,7 +264,7 @@ minetest.register_node('more_fire:embers', {
 	wield_image = 'more_fire_campfire.png',
 	walkable = false,
 	is_ground_content = true,
-	groups = {dig_immediate=3, flammable=1,},
+	groups = {dig_immediate=2, flammable=1,},
 	paramtype = 'light',
 	drop = 'more_fire:kindling',
 	selection_box = {
@@ -289,7 +289,7 @@ end,
 })
 
 minetest.register_node('more_fire:campfire', {
-	description = 'Campfire',
+	description = 'Burning Campfire',
 	drawtype = 'mesh',
 	mesh = 'more_fire_campfire.obj',
 	tiles = {
@@ -299,10 +299,9 @@ minetest.register_node('more_fire:campfire', {
 	paramtype = 'light',
 	walkable = false,
 	damage_per_second = 1,
-	drop = 'more_fire:charcoal',
 	light_source = 14,
 	is_ground_content = true,
-	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3,igniter=1,not_in_creative_inventory=1},
+	groups = {cracky=2,hot=2,attached_node=1,igniter=1,not_in_creative_inventory=1},
 	selection_box = {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
@@ -516,15 +515,16 @@ minetest.register_tool('more_fire:lighter', {
 		full_punch_interval = 1.0,
 		max_drop_level = 0,
 		groupcaps = {
-			flammable = {uses = 120, maxlevel = 1},
+			flammable = {uses = 200, maxlevel = 1},
 		}
 	},
 	on_use = function(itemstack, user, pointed_thing, pos)
+		minetest.sound_play("spark", {gain = 1.0, max_hear_distance = 32, loop = false })
 		if pointed_thing.type == 'node'
 			and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
 			then
 				burn(pointed_thing)
-				itemstack:add_wear(65535/120)
+				itemstack:add_wear(65535/200)
 				return itemstack
 			end
 	end,
