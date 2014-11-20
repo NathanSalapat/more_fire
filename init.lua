@@ -219,9 +219,9 @@ minetest.register_node(':default:torch', {
 	sounds = default.node_sound_defaults(),
 	mesh = {
 		type = 'wallmounted',
-		wall_top = 'more_fire_campfire.obj',
-		wall_bottom = 'more_fire_torch.obj',
-		wall_side = 'more_fire_torch_wall.obj',
+		wall_top = ('more_fire_campfire.obj'),
+		wall_bottom = ('more_fire_torch.obj'),
+		wall_side = ('more_fire_torch_wall.obj'),
 	},
 	selection_box = {
 		type = "wallmounted",
@@ -253,6 +253,12 @@ minetest.register_node('more_fire:kindling', {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
 		},
+	on_construct = function(pos)
+	 		local meta = minetest.env:get_meta(pos)
+	 		meta:set_string('formspec', more_fire.embers_formspec)
+	 		local inv = meta:get_inventory()
+			inv:set_size('fuel', 4)
+		end,
 })
 
 minetest.register_node('more_fire:embers', {
@@ -264,7 +270,7 @@ minetest.register_node('more_fire:embers', {
 	wield_image = 'more_fire_campfire.png',
 	walkable = false,
 	is_ground_content = true,
-	groups = {dig_immediate=2, flammable=1,},
+	groups = {dig_immediate=3, flammable=1,},
 	paramtype = 'light',
 	drop = 'more_fire:kindling',
 	selection_box = {
@@ -333,6 +339,12 @@ minetest.register_node('more_fire:kindling_contained', {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, -0.5, 0.48 },
 		},
+	on_construct = function(pos)
+		local meta = minetest.env:get_meta(pos)
+		meta:set_string('formspec', more_fire.embers_formspec)
+		local inv = meta:get_inventory()
+		inv:set_size('fuel', 4)
+	end,
 })
 
 minetest.register_node('more_fire:embers_contained', {
