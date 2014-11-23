@@ -1,7 +1,5 @@
-# Blender v2.71 (sub 6) OBJ File: 'campfire.blend'
+# Blender v2.72 (sub 2) OBJ File: 'campfire.blend'
 # www.blender.org
-mtllib more_fire_contained_campfire.mtl
-o Flames_Cube.001
 v 0.353153 -0.337287 0.000000
 v -0.366847 -0.337287 0.000000
 v -0.366847 0.382713 -0.000000
@@ -19,12 +17,10 @@ vt 1.000000 0.000000
 vt 1.000000 1.000000
 vt 0.000000 1.000000
 g Flames_Cube.001_Fire
-usemtl Fire
 s off
 f 4/1 5/2 7/3 6/4
 f 8/1 9/2 11/3 10/4
 f 1/1 2/2 3/3 12/4
-o Contained_Fire_Cube.000
 v 0.109850 -0.357143 0.305314
 v 0.109850 -0.248233 0.283371
 v -0.001248 -0.248233 0.283371
@@ -363,7 +359,6 @@ vt 0.312500 0.625000
 vt 0.031250 0.625000
 vt 0.023438 0.968750
 g Contained_Fire_Cube.000_Logs-Stone
-usemtl Logs-Stone
 s off
 f 20/5 17/6 18/7 19/8
 f 14/9 18/10 17/11 13/12

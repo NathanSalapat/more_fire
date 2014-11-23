@@ -1,3 +1,10 @@
+11-22-14:
+Changed a couple textures.
+Currently using nodeboxes for torches, so they are no longer invisible.
+
+11-19-14:
+Campfires are working altogether now. Craft kindling and add some fuel to it, and then click on it with the lighter until it starts on fire.
+
 11-12-14:
 Removed the ABM for torches, and replaced the two nodes with just one.
 Tweaked the lighter, it should last longer and light fires faster. Added a sparking sound effect as well.

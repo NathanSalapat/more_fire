@@ -7,7 +7,7 @@ Lighter image created by me with Blender.
 
 
 Code:
-Torch rotation by addi, shamelessly copied from the 3d_torches mod.
+3d torch code and nodebox's from Carbone, by Calinou CC0 1.0 Will be replaced with mesh torches once I figure that bit out.
 
 Inspiration:
 Napiophelios, from the forum, who gave me some really good ideas from the old campfire mod, which I didn't even know about.
