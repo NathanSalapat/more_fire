@@ -1,3 +1,14 @@
+4-15-15:
+All fires now die after time. When you create embers either by lighting kindling or crafting directly you have about three minutes to add wood. After the wood all burns up you have three minutes to add more wood or the embers turn back into kindling and need to be activated with a lighter again.
+
+4-13-15:
+Changed some how I add the drops to gravel, no longer do I replace the entire node, just add the new drop info to it. This should keep it from breaking anything that does the same to gravel.
+
+4-12-15:
+Some major overhauling, not of code, but layout, no longer is everything stored in the init.lua, it's all broken down into neat files.
+I added finite torches, change the settings in the config, right now you can only turn them on or off, settings are not retro-active, only torches placed after the update will burn out. When a torch burns out it turns into a torch stub which can be picked up and burnt as fuel.
+I changed a couple textures down to 16x16, they had been 32x32. Renamed textures to follow proper naming methods, this won't change any placed nodes.
+
 11-22-14:
 Changed a couple textures.
 Currently using nodeboxes for torches, so they are no longer invisible.
