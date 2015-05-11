@@ -2,4 +2,4 @@
 --Change the following line if you want torches to burn infinitly. 
 --(true/false)
 --when true torches will burn out after a day.
-finite_torches = false
+finite_torches = true

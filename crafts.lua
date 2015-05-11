@@ -70,6 +70,24 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+		output = 'more_fire:oil_lamp_off 1',
+		recipe = {
+		{'default:glass'},
+		{'farming:cotton'},
+		{'default:iron_lump'},
+		}
+})
+
+minetest.register_craft({
+		output = 'more_fire:oil 1',
+		recipe = {
+		{'group:leaves', 'group:leaves', 'group:leaves'},
+		{'group:leaves', 'group:leaves', 'group:leaves'},
+		{'', 'vessels:glass_bottle', ''},
+		}
+})
+
+minetest.register_craft({
 	type = 'shapeless',
 	output = 'more_fire:lighter 1',
 	recipe = {'more_fire:flintstone', 'default:steel_ingot'}
@@ -98,5 +116,5 @@ minetest.register_craft({
 minetest.register_craft({
 	type = 'fuel',
 	recipe = 'more_fire:torch_stub',
-	burntime = 3,
+	burntime = 2,
 })

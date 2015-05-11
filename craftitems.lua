@@ -13,3 +13,8 @@ minetest.register_craftitem('more_fire:lighter', {
 	description = 'Flint and Steel',
 	inventory_image = 'more_fire_lighter.png',
 })
+
+minetest.register_craftitem('more_fire:oil', {
+	description = 'lantern oil',
+	inventory_image = 'more_fire_oil.png',
+})
