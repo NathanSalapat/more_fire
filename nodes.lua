@@ -13,30 +13,30 @@ minetest.override_item('default:gravel', {
 	},
 })
 
-minetest.register_node(":default:torch", {
-	description = "Torch",
-	drawtype = "nodebox",
+minetest.register_node(':default:torch', {
+	description = 'Torch',
+	drawtype = 'nodebox',
 	tiles = {
-		{name = "more_fire_torch_top.png"},
-		{name = "more_fire_torch_bottom.png"},
-		{name = "more_fire_torch_side.png"},
+		{name = 'more_fire_torch_top.png'},
+		{name = 'more_fire_torch_bottom.png'},
+		{name = 'more_fire_torch_side.png'},
 	},
-	inventory_image = "more_fire_torch_inv.png",
-	wield_image = "more_fire_torch_inv.png",
-	paramtype = "light",
-	paramtype2 = "wallmounted",
+	inventory_image = 'more_fire_torch_inv.png',
+	wield_image = 'more_fire_torch_inv.png',
+	paramtype = 'light',
+	paramtype2 = 'wallmounted',
 	sunlight_propagates = true,
 	is_ground_content = false,
 	walkable = false,
 	light_source = LIGHT_MAX - 1,
 	node_box = {
-		type = "wallmounted",
+		type = 'wallmounted',
 		wall_top    = {-0.0625, -0.0625, -0.0625, 0.0625, 0.5   , 0.0625},
 		wall_bottom = {-0.0625, -0.5   , -0.0625, 0.0625, 0.0625, 0.0625},
 		wall_side   = {-0.5   , -0.5   , -0.0625, -0.375, 0.0625, 0.0625},
 	},
 	selection_box = {
-		type = "wallmounted",
+		type = 'wallmounted',
 		wall_top    = {-0.1, -0.05, -0.1, 0.1, 0.5   , 0.1},
 		wall_bottom = {-0.1, -0.5   , -0.1, 0.1, 0.0625, 0.1},
 		wall_side   = {-0.35, -0.5  , -0.1, -0.5, 0.0625, 0.1},
@@ -52,36 +52,34 @@ minetest.register_node(":default:torch", {
 	on_timer = function(pos, elapsed)
 		local timer = minetest.get_node_timer(pos)
 		local node = minetest.get_node(pos)
-		print (node.name)
-		print (node)
 		minetest.swap_node(pos, {name = 'more_fire:torch_stub', param2 = node.param2})
 		timer:stop()
 	end,
 })
 
 minetest.register_node('more_fire:torch_stub', {
-	description = "burnt out torch",
-	drawtype = "nodebox",
+	description = 'burnt out torch',
+	drawtype = 'nodebox',
 	tiles = {
-		{name = "more_fire_torch_stub_top.png"},
-		{name = "more_fire_torch_stub_bottom.png"},
-		{name = "more_fire_torch_stub_side.png"},
+		{name = 'more_fire_torch_stub_top.png'},
+		{name = 'more_fire_torch_stub_bottom.png'},
+		{name = 'more_fire_torch_stub_side.png'},
 	},
-	inventory_image = "more_fire_torch_stub_inv.png",
-	wield_image = "more_fire_torch_stub_inv.png",
-	paramtype = "light",
-	paramtype2 = "wallmounted",
+	inventory_image = 'more_fire_torch_stub_inv.png',
+	wield_image = 'more_fire_torch_stub_inv.png',
+	paramtype = 'light',
+	paramtype2 = 'wallmounted',
 	sunlight_propagates = true,
 	is_ground_content = false,
 	walkable = false,
 	node_box = {
-		type = "wallmounted",
+		type = 'wallmounted',
 		wall_top    = {-0.0625, 0.2, -0.0625, 0.0625, 0.5   , 0.0625}, 
 		wall_bottom = {-0.0625, -0.5   , -0.0625, 0.0625, -0.2, 0.0625},
 		wall_side   = {-0.5   , -0.5   , -0.0625, -0.375, -0.2, 0.0625},
 	},
 	selection_box = {
-		type = "wallmounted",
+		type = 'wallmounted',
 		wall_top    = {-0.1, 0.2, -0.1, 0.1, 0.5   , 0.1},
 		wall_bottom = {-0.1, -0.5   , -0.1, 0.1, -0.2, 0.1},
 		wall_side   = {-0.35, -0.5  , -0.1, -0.5, -0.2, 0.1},
@@ -336,9 +334,7 @@ minetest.register_node('more_fire:oil_lamp_on', {
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
 			local fuelstack = inv:get_stack('fuel', 1)
-			print 'there is oil in the lantern.'
 			timer:start(12*60)
-			print 'taking oil from lamp.'
 			fuelstack:take_item()
 			inv:set_stack('fuel', 1, fuelstack)
 			if inv:is_empty('fuel') then
@@ -346,10 +342,14 @@ minetest.register_node('more_fire:oil_lamp_on', {
 				end
 				timer:stop()
 		elseif inv:is_empty('fuel') then
-			print 'no fuel left.'
 			minetest.set_node(pos, {name = 'more_fire:oil_lamp_off', param2=node.param2})
 			timer:stop()
 		end
+	end,
+	can_dig = function(pos,player)
+		local meta = minetest.get_meta(pos);
+		local inv = meta:get_inventory()
+		return inv:is_empty('fuel')
 	end,
 })
 
@@ -372,14 +372,14 @@ minetest.register_node('more_fire:oil_lamp_off', {
 	on_construct = function(pos)
 		local meta = minetest.env:get_meta(pos)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 8*4)
+		inv:set_size('main', 8*4)
 		inv:set_size('fuel', 1)
-		meta:set_string("formspec",
-			"size[8,9]"..
-			"label[1,0;Add lantern oil for a brighter flame.]" ..
-            "list[current_name;fuel;1,1.5;1,1]"..
-            "list[current_player;main;0,5;8,4;]")
-		meta:set_string("infotext", "Oil Lantern")
+		meta:set_string('formspec',
+			'size[8,6]'..
+			'label[2,.75;Add lantern oil for a brighter flame.]' ..
+            'list[current_name;fuel;1,.5;1,1]'..
+            'list[current_player;main;0,2;8,4;]')
+		meta:set_string('infotext', 'Oil Lantern')
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.env:get_meta(pos)
@@ -390,11 +390,11 @@ minetest.register_node('more_fire:oil_lamp_off', {
 			minetest.swap_node(pos, {name = 'more_fire:oil_lamp_on', param2=node.param2})
 			timer:start(12*60) --one oil unit will burn for 12 minutes
 			meta:set_string('infotext', 'Burning Oil Lamp')
-			meta:set_string("formspec",
-			"size[8,9]"..
-			"label[1,0;keep filled with lantern oil for a bright flame.]" ..
-            "list[current_name;fuel;1,1.5;1,1]"..
-            "list[current_player;main;0,5;8,4;]")
+			meta:set_string('formspec',
+			'size[8,6]'..
+			'label[2,.75;keep filled with lantern oil for a bright flame.]' ..
+            'list[current_name;fuel;1,.5;1,1]'..
+            'list[current_player;main;0,2;8,4;]')
 		end
 	end,
 })

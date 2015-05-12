@@ -109,6 +109,12 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = 'fuel',
+	recipe = 'more_fire:oil',
+	burntime = 10,
+})
+
+minetest.register_craft({
+	type = 'fuel',
 	recipe = 'more_fire:charcoal_block',
 	burntime = 315,
 })
