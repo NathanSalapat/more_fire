@@ -223,6 +223,14 @@ minetest.register_node('more_fire:kindling_contained', {
 		local inv = meta:get_inventory()
 		inv:set_size('fuel', 4)
 	end,
+	can_dig = function(pos, player)
+			local meta = minetest.get_meta(pos);
+			local inv = meta:get_inventory()
+			if not inv:is_empty('fuel') then
+				return false
+			end
+			return true
+		end,
 })
 
 minetest.register_node('more_fire:embers_contained', {
@@ -397,4 +405,14 @@ minetest.register_node('more_fire:oil_lamp_off', {
             'list[current_player;main;0,2;8,4;]')
 		end
 	end,
+	can_dig = function(pos, player)
+			local meta = minetest.get_meta(pos);
+			local inv = meta:get_inventory()
+			if not inv:is_empty('fuel') then
+				return false
+			elseif not inv:is_empty("res") then
+				return false
+			end
+			return true
+		end,
 })
