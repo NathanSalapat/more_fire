@@ -93,6 +93,20 @@ minetest.register_craft({
 	recipe = {'more_fire:flintstone', 'default:steel_ingot'}
 })
 
+minetest.register_craft({
+	output = 'more_fire:oil_lamp_off 1',
+	recipe = {
+		{'more_fire:oil_lamp_table_off'}
+	}
+})
+
+minetest.register_craft({
+	output = 'more_fire:oil_lamp_table_off 1',
+	recipe = {
+		{'more_fire:oil_lamp_off'}
+	}
+})
+
 -- cooking recipes
 minetest.register_craft({
 	type = 'cooking',
