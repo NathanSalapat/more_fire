@@ -260,6 +260,7 @@ minetest.register_node('more_fire:embers_contained', {
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 4)
 			timer:start(190)
+			minetest.delete_particlespawner(1)
 			smoke_particles(pos)
 		end,
 	can_dig = function(pos, player)
@@ -321,7 +322,7 @@ minetest.register_node('more_fire:campfire_contained', {
 			return true
 			end,
 			get_staticdata = function(self)
-end,
+	end,
 })
 
 minetest.register_node('more_fire:oil_lamp_on', {

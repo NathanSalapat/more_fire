@@ -59,6 +59,27 @@ function smoke_particles(pos)
         collisiondetection = false, -- do particles stop when they hit solid node
         texture = 'more_fire_smoke.png', -- image to use (e.g. "bubble.png" )
         vertical = false, -- upright/vertical image for rain
---        playername = "singleplayer", -- particles only appear for this player
+--      playername = "singleplayer", -- particles only appear for this player
+    })
+end
+
+function ember_particles(pos)
+	minetest.add_particlespawner({
+        amount = 1,
+        time = 0,
+        minpos = {x=pos.x, y=pos.y, z=pos.z},
+        maxpos = {x=pos.x, y=pos.y, z=pos.z},
+        minvel = {x=-.1, y=.2, z=-.1},
+        maxvel = {x=.1,  y=.6,  z=.1},
+        minacc = {x=-.05, y=.02, z=-.05},
+        maxacc = {x=.1, y=.25, z=.1},
+        minexptime = 3,
+        maxexptime = 4,
+        minsize = 1,
+        maxsize = 2,
+        collisiondetection = false,
+        texture = 'more_fire_embers.png',
+        vertical = false,
+--      playername = "singleplayer",
     })
 end
