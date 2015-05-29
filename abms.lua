@@ -26,6 +26,7 @@ minetest.register_abm({  -- Controls non-contained fire
 			meta:get_float('fuel_totaltime') * 100)
 			meta:set_string('infotext','Campfire active: '..percent..'%')
 			minetest.swap_node(pos, {name = 'more_fire:campfire'})
+			minetest.delete_particlespawner(1)
 			meta:set_string('formspec',
 			'size[8,6.75]'..
 			default.gui_bg..
@@ -46,6 +47,7 @@ minetest.register_abm({  -- Controls non-contained fire
 				if node.name == 'more_fire:campfire' then
 					meta:set_string('infotext','Put more wood on the fire!')
 					minetest.swap_node(pos, {name = 'more_fire:embers'})
+					smoke_particles(pos)
 					local timer = minetest.get_node_timer(pos)
 					meta:set_string('formspec', more_fire.embers_formspec)
 					timer:start(180)
@@ -88,6 +90,7 @@ minetest.register_abm({  -- Controls the contained fires.
 			meta:get_float('fuel_totaltime') * 100)
 			meta:set_string('infotext','Campfire active: '..percent..'%')
 			minetest.swap_node(pos, {name = 'more_fire:campfire_contained'})
+			minetest.delete_particlespawner(1)
 			meta:set_string('formspec',
 			'size[8,6.75]'..
 			default.gui_bg..
@@ -109,6 +112,7 @@ minetest.register_abm({  -- Controls the contained fires.
 					meta:set_string('infotext','Put more wood on the fire!')
 					minetest.swap_node(pos, {name = 'more_fire:embers_contained'})
 					meta:set_string('formspec', more_fire.embers_formspec)
+					smoke_particles(pos)
 					local timer = minetest.get_node_timer(pos)
 					timer:start(190)
 				end

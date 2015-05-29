@@ -1,4 +1,3 @@
-
 function default.get_hotbar_bg(x,y)
 	local out = ''
 	for i=0,7,1 do
@@ -41,4 +40,25 @@ function burn(pointed_thing) --kindling doesn't always start from the first spar
 			minetest.set_node(pointed_thing.under, {name = 'more_fire:embers'})
 	else --Do nothing
 	end
+end
+
+function smoke_particles(pos)
+    minetest.add_particlespawner({
+        amount = 1, -- how many particles do you want
+        time = 0, -- spawner stops after this time (use 0 for infinite)
+        minpos = {x=pos.x, y=pos.y, z=pos.z}, -- minimum offset
+        maxpos = {x=pos.x, y=pos.y, z=pos.z}, -- maximum offset
+        minvel = {x=-.1, y=0, z=-.1}, -- minimum velocity
+        maxvel = {x=.1,  y=.4,  z=.1}, -- maximum velocity
+        minacc = {x=-.05, y=.02, z=-.05}, -- minimum acceleration
+        maxacc = {x=.1, y=.1, z=.1}, -- maximim acceleration
+        minexptime = 3, -- minimum expiration time
+        maxexptime = 8, -- maximum expiration time
+        minsize = 3, -- minimum size (0.5 = half size)
+        maxsize = 8, -- maximum size (1=full resolution)
+        collisiondetection = false, -- do particles stop when they hit solid node
+        texture = 'more_fire_smoke.png', -- image to use (e.g. "bubble.png" )
+        vertical = false, -- upright/vertical image for rain
+--        playername = "singleplayer", -- particles only appear for this player
+    })
 end

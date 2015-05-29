@@ -107,11 +107,25 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = 'more_fire:marker 1',
+	recipe = {
+		{'more_fire:torch_stub', 'more_fire:torch_stub', 'more_fire:torch_stub'}
+		
+	}
+})
+
 -- cooking recipes
 minetest.register_craft({
 	type = 'cooking',
 	recipe = 'group:tree',
 	output = 'more_fire:charcoal',
+})
+
+minetest.register_craft({
+	type = 'cooking',
+	recipe = 'default:stick',
+	output = 'more_fire:marker'
 })
 
 -- fuel recipes
