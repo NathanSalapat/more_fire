@@ -142,7 +142,6 @@ minetest.register_node('more_fire:embers', {
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 1)
 			timer:start(180)
-			smoke_particles(pos)
 		end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
@@ -155,7 +154,6 @@ minetest.register_node('more_fire:embers', {
 	on_timer = function(pos, elapsed)
 		local timer = minetest.get_node_timer(pos)
 		timer:stop()
-		minetest.delete_particlespawner(1)
 		minetest.set_node(pos, {name = 'more_fire:kindling'})
 		end,
 	after_place_node = function(pos)
@@ -260,8 +258,6 @@ minetest.register_node('more_fire:embers_contained', {
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 4)
 			timer:start(190)
-			minetest.delete_particlespawner(1)
-			smoke_particles(pos)
 		end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
@@ -274,7 +270,6 @@ minetest.register_node('more_fire:embers_contained', {
 	on_timer = function(pos, elapsed)
 		local timer = minetest.get_node_timer(pos)
 		timer:stop()
-		minetest.delete_particlespawner(1)
 		minetest.set_node(pos, {name = 'more_fire:kindling_contained'})
 		end,
 	after_place_node = function(pos)

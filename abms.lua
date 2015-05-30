@@ -26,8 +26,6 @@ minetest.register_abm({  -- Controls non-contained fire
 			meta:get_float('fuel_totaltime') * 100)
 			meta:set_string('infotext','Campfire active: '..percent..'%')
 			minetest.swap_node(pos, {name = 'more_fire:campfire'})
-			minetest.delete_particlespawner(1)
-			ember_particles(pos)
 			meta:set_string('formspec',
 			'size[8,6.75]'..
 			default.gui_bg..
@@ -48,8 +46,6 @@ minetest.register_abm({  -- Controls non-contained fire
 				if node.name == 'more_fire:campfire' then
 					meta:set_string('infotext','Put more wood on the fire!')
 					minetest.swap_node(pos, {name = 'more_fire:embers'})
-					minetest.delete_particlespawner(1)
-					smoke_particles(pos)
 					local timer = minetest.get_node_timer(pos)
 					meta:set_string('formspec', more_fire.embers_formspec)
 					timer:start(180)
@@ -92,8 +88,6 @@ minetest.register_abm({  -- Controls the contained fires.
 			meta:get_float('fuel_totaltime') * 100)
 			meta:set_string('infotext','Campfire active: '..percent..'%')
 			minetest.swap_node(pos, {name = 'more_fire:campfire_contained'})
-			minetest.delete_particlespawner(1)
-			ember_particles(pos)
 			meta:set_string('formspec',
 			'size[8,6.75]'..
 			default.gui_bg..
@@ -115,8 +109,6 @@ minetest.register_abm({  -- Controls the contained fires.
 					meta:set_string('infotext','Put more wood on the fire!')
 					minetest.swap_node(pos, {name = 'more_fire:embers_contained'})
 					meta:set_string('formspec', more_fire.embers_formspec)
-					minetest.delete_particlespawner(1)
-					smoke_particles(pos)
 					local timer = minetest.get_node_timer(pos)
 					timer:start(190)
 				end
@@ -128,4 +120,28 @@ minetest.register_abm({  -- Controls the contained fires.
 		stack:take_item()
 		inv:set_stack('fuel', 1, stack)
 end,
+})
+
+minetest.register_abm({ --smoke for embers
+	nodenames = {'more_fire:embers', 'more_fire:embers_contained'},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node)
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air"
+		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == "air" then
+			smoke_particles(pos)
+		end
+	end
+})
+
+minetest.register_abm({ --embers for fire
+	nodenames = {'more_fire:campfire', 'more_fire:campfire_contained'},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node)
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == "air"
+		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == "air" then
+			ember_particles(pos)
+		end
+	end
 })
