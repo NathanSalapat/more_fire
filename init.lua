@@ -60,4 +60,5 @@ dofile(minetest.get_modpath('more_fire')..'/nodes.lua')
 dofile(minetest.get_modpath('more_fire')..'/craftitems.lua')
 dofile(minetest.get_modpath('more_fire')..'/crafts.lua')
 dofile(minetest.get_modpath('more_fire')..'/tools.lua')
-
+dofile(minetest.get_modpath('more_fire')..'/molotov.lua')
+dofile(minetest.get_modpath('more_fire')..'/smokebomb.lua')
