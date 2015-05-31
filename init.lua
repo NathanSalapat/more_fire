@@ -20,8 +20,6 @@ default.gui_slots..
 'list[current_player;main;0,4;8,3;8]'..
 default.get_hotbar_bg(0,2.75)
 
---configpath = minetest.get_mod_directory() ..'/config.txt'
---dofile(configpath)
 dofile(minetest.get_modpath('more_fire')..'/config.txt')
 dofile(minetest.get_modpath('more_fire')..'/functions.lua')
 dofile(minetest.get_modpath('more_fire')..'/abms.lua')
@@ -29,4 +27,7 @@ dofile(minetest.get_modpath('more_fire')..'/nodes.lua')
 dofile(minetest.get_modpath('more_fire')..'/craftitems.lua')
 dofile(minetest.get_modpath('more_fire')..'/crafts.lua')
 dofile(minetest.get_modpath('more_fire')..'/tools.lua')
-
+if pyromania then
+	dofile(minetest.get_modpath('more_fire')..'/molotov.lua')
+	dofile(minetest.get_modpath('more_fire')..'/smokebomb.lua')
+end

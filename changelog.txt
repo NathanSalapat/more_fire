@@ -1,3 +1,10 @@
+5-30-15:
+Napiophelios put together some nice smoke bombs and molotov cocktails for this mod, I(Nathan) did a few tweaks, changed some alignment and took care of some depreciated functions to stop debug spamming.
+
+5-12-15:
+Lanterns are here, both wall mounted a table top. Craft with a piece of glass above a string above a lump of iron. Yields one lantern, craft the lantern to change between wall mounted and table top.
+Lanterns burn oil, twelve minutes of light for one bottle of oil. Put six leaves above a glass vessel to create lantern oil.
+
 4-15-15:
 All fires now die after time. When you create embers either by lighting kindling or crafting directly you have about three minutes to add wood. After the wood all burns up you have three minutes to add more wood or the embers turn back into kindling and need to be activated with a lighter again.
 

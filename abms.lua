@@ -121,3 +121,27 @@ minetest.register_abm({  -- Controls the contained fires.
 		inv:set_stack('fuel', 1, stack)
 end,
 })
+
+minetest.register_abm({ --smoke for embers
+	nodenames = {'more_fire:embers', 'more_fire:embers_contained'},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node)
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air'
+		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == 'air' then
+			smoke_particles(pos)
+		end
+	end
+})
+
+minetest.register_abm({ --embers for fire
+	nodenames = {'more_fire:campfire', 'more_fire:campfire_contained'},
+	interval = 1,
+	chance = 2,
+	action = function(pos, node)
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air'
+		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == 'air' then
+			ember_particles(pos)
+		end
+	end
+})

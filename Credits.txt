@@ -8,9 +8,11 @@ Lighter image created by me with Blender.
 
 Code:
 3d torch code and nodebox's from Carbone, by Calinou CC0 1.0 Will be replaced with mesh torches once I figure that bit out.
+Smokebomb and molotov cocktail coded by Napiophelios
 
 Inspiration:
 Napiophelios, from the forum, who gave me some really good ideas from the old campfire mod, which I didn't even know about.
+
 
 Sound Effects:
 Sparker sound from BroAsis on Freesound. https://www.freesound.org/people/BroAsis/sounds/106853/

@@ -2,6 +2,7 @@ If you have any ideas for more fire related things please let me know, or consid
 
 # Mod Contributors
 Nathan
+Napiophelios
 
 # More_fire
 This is a Minetest mod that adds more/better fire related stuff
@@ -14,17 +15,22 @@ CC0
 
 ## Dependencies
 - default
+- farming
+- fire
 - vessels
+
 
 #
 Items currently included:
 - Campfires
-- Finite torches, they burn out
-- oil lanterns, use these instead of torches.
+- Finite torches, they burn out (configurable in config.txt)
+- oil lanterns, use these instead of torches
+- oil for the lanterns of course
 - a lighter, for starting the campfires.
-- charcoal, much like coal, but made by cooking wood.
+- charcoal, much like coal, but made by cooking wood
+- a smoke bomb
+- molotov cocktail
 
 #
 Planned:
 Cooking capabilities in the campfires.
-The ability to light a campfire by putting a torch in it's fuel slot, and then adding other wood.

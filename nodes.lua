@@ -85,7 +85,8 @@ minetest.register_node('more_fire:torch_stub', {
 		wall_side   = {-0.35, -0.5  , -0.1, -0.5, -0.2, 0.1},
 	},
 	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, not_in_creative_inventory =1},
-	sounds = default.node_sound_wood_defaults(),})
+	sounds = default.node_sound_wood_defaults(),
+})
 	
 minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
@@ -107,11 +108,10 @@ minetest.register_node('more_fire:kindling', {
 	paramtype = 'light',
 	selection_box = {
 		type = 'fixed',
-		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },  -- Right, Bottom, Back, Left, Top, Front
+		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },  
 		},
 	on_construct = function(pos)
 	 		local meta = minetest.env:get_meta(pos)
---	 		meta:set_string('formspec', more_fire.embers_formspec)
 	 		local inv = meta:get_inventory()
 			inv:set_size('fuel', 4)
 		end,
@@ -317,7 +317,7 @@ minetest.register_node('more_fire:campfire_contained', {
 			return true
 			end,
 			get_staticdata = function(self)
-end,
+	end,
 })
 
 minetest.register_node('more_fire:oil_lamp_on', {
@@ -384,7 +384,7 @@ minetest.register_node('more_fire:oil_lamp_off', {
 		inv:set_size('fuel', 1)
 		meta:set_string('formspec',
 			'size[8,6]'..
-			'label[2,.75;Add lantern oil for a brighter flame.]' ..
+			'label[2,.75;Add lantern oil for a bright flame.]' ..
             'list[current_name;fuel;1,.5;1,1]'..
             'list[current_player;main;0,2;8,4;]')
 		meta:set_string('infotext', 'Oil Lantern')
@@ -428,7 +428,7 @@ minetest.register_node('more_fire:oil_lamp_table_on', {
 	drop = 'more_fire:oil_lamp_off',
 	selection_box = {
 		type = 'fixed',
-		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},   -- Right, Bottom, Back, Left, Top, Front
+		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},
 		},
 	on_timer = function(pos, itemstack)
 		local meta = minetest.env:get_meta(pos)
@@ -478,7 +478,7 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 		inv:set_size('fuel', 1)
 		meta:set_string('formspec',
 			'size[8,6]'..
-			'label[2,.75;Add lantern oil for a brighter flame.]' ..
+			'label[2,.75;Add lantern oil for a bright flame.]' ..
             'list[current_name;fuel;1,.5;1,1]'..
             'list[current_player;main;0,2;8,4;]')
 		meta:set_string('infotext', 'Oil Lantern')
@@ -506,4 +506,20 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 			end
 			return true
 		end,
+})
+
+minetest.register_node('more_fire:marking', {
+	description = 'Nathan is really cool ;)',
+	paramtype = 'light',
+	paramtype2 = 'facedir',
+	tiles = {'more_fire_mark.png'},
+	drawtype = 'mesh',
+	mesh = 'more_fire_mark.obj',
+	selection_box = {
+		type = 'fixed',
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5}, -- Right, Bottom, Back, Left, Top, Front
+		},
+	walkable = false,
+	groups = {choppy = 2, dig_immediate = 3, attached_node = 1, not_in_creative_inventory=1},
+	drop = '',
 })
