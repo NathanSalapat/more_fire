@@ -3,3 +3,7 @@
 --(true/false)
 --when true torches will burn out after a day.
 finite_torches = true
+
+--Do you want smoke bombs and molotov cocktails, these can be dangerous in the hands of griefers.
+--(true/false)
+pyromania = true

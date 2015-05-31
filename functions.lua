@@ -57,9 +57,9 @@ function smoke_particles(pos)
         minsize = 3, -- minimum size (0.5 = half size)
         maxsize = 8, -- maximum size (1=full resolution)
         collisiondetection = false, -- do particles stop when they hit solid node
-        texture = 'more_fire_smoke.png', -- image to use (e.g. "bubble.png" )
+        texture = 'more_fire_smoke.png', -- image to use (e.g. 'bubble.png' )
         vertical = false, -- upright/vertical image for rain
---      playername = "singleplayer", -- particles only appear for this player
+--      playername = 'singleplayer', -- particles only appear for this player
     })
 end
 
@@ -80,6 +80,6 @@ function ember_particles(pos)
         collisiondetection = false,
         texture = 'more_fire_embers.png',
         vertical = false,
---      playername = "singleplayer",
+--      playername = 'singleplayer',
     })
 end
