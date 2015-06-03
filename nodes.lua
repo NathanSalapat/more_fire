@@ -258,6 +258,7 @@ minetest.register_node('more_fire:embers_contained', {
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 4)
 			timer:start(190)
+			print 'called the on_construct function.'
 		end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
@@ -469,7 +470,7 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 	light_source = 1,
 	selection_box = {
 		type = 'fixed',
-		fixed = {-.2, -.4, -0.1, 0.2, .35, .5},
+		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},
 		},
 	on_construct = function(pos)
 		local meta = minetest.env:get_meta(pos)
