@@ -5,8 +5,6 @@
    local MOD_PATH = minetest.get_modpath(MOD_NAME)
    local Vec3 = dofile(MOD_PATH..'/lib/Vec3_1-0.lua')
 
-more_fire = {}
-
 minetest.register_craftitem('more_fire:molotov_cocktail', {
 		description = 'Molotov Cocktail',
 		inventory_image = 'more_fire_molotov_cocktail.png',
