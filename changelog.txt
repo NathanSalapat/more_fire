@@ -1,3 +1,6 @@
+6-3-15:
+Campfires and embers now have particles, smoke for the embers, and little sparks for the fires. Also lava now spawns little lava particles, the particles do nothing other than add a little visual effect.
+
 5-30-15:
 Napiophelios put together some nice smoke bombs and molotov cocktails for this mod, I(Nathan) did a few tweaks, changed some alignment and took care of some depreciated functions to stop debug spamming.
 

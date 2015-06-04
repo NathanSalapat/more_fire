@@ -145,3 +145,14 @@ minetest.register_abm({ --embers for fire
 		end
 	end
 })
+
+minetest.register_abm({ --lava
+	nodenames = {'default:lava_source', 'default:lava_flowing'},
+	interval = 3,
+	chance = 7,
+	action = function(pos, node)
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air' then
+			lava_particles(pos)
+		end
+	end
+})

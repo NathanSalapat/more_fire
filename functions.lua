@@ -83,3 +83,24 @@ function ember_particles(pos)
 --      playername = 'singleplayer',
     })
 end
+
+function lava_particles(pos)
+	minetest.add_particlespawner({
+        amount = 2,
+        time = 1,
+        minpos = {x=pos.x, y=pos.y, z=pos.z},
+        maxpos = {x=pos.x, y=pos.y, z=pos.z},
+        minvel = {x=-.4, y=.2, z=-.4},
+        maxvel = {x=.6,  y=1,  z=.6},
+        minacc = {x=-.3, y=.2, z=-.3},
+        maxacc = {x=.3, y=.6, z=.3},
+        minexptime = 1,
+        maxexptime = 2,
+        minsize = .4,
+        maxsize = 2,
+        collisiondetection = false,
+        texture = 'default_lava.png',
+        vertical = false,
+--      playername = 'singleplayer',
+    })
+end
