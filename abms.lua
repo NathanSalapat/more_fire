@@ -127,8 +127,7 @@ minetest.register_abm({ --smoke for embers
 	interval = 1,
 	chance = 2,
 	action = function(pos, node)
-		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air'
-		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == 'air' then
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air' then
 			smoke_particles(pos)
 		end
 	end
@@ -139,8 +138,7 @@ minetest.register_abm({ --embers for fire
 	interval = 1,
 	chance = 2,
 	action = function(pos, node)
-		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air'
-		  and minetest.get_node({x=pos.x, y=pos.y+2.0, z=pos.z}).name == 'air' then
+		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air' then
 			ember_particles(pos)
 		end
 	end
@@ -148,8 +146,8 @@ minetest.register_abm({ --embers for fire
 
 minetest.register_abm({ --lava
 	nodenames = {'default:lava_source', 'default:lava_flowing'},
-	interval = 3,
-	chance = 7,
+	interval = 4,
+	chance = 15,
 	action = function(pos, node)
 		if minetest.get_node({x=pos.x, y=pos.y+1.0, z=pos.z}).name == 'air' then
 			lava_particles(pos)
