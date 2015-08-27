@@ -31,6 +31,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'more_fire:embers 1',
+	recipe = {
+		{'group:flammable', 'default:torch', 'group:flammable'},
+		{'group:wood', 'group:wood', 'group:wood'},
+	}
+})
+
+minetest.register_craft({
 	output = 'more_fire:embers_contained 1',
 	recipe = {
 		{'', 'more_fire:embers', ''},
@@ -65,6 +73,12 @@ minetest.register_craft({
 	type = 'shapeless',
 	output = 'more_fire:kindling 1',
 	recipe = {'group:kindling', 'group:wood', 'group:kindling', 'group:kindling', 'group:kindling'},
+})
+
+minetest.register_craft({
+	type = 'shapeless',
+	output = 'more_fire:kindling 1',
+	recipe = {'group:flammable', 'group:wood', 'group:flammable', 'group:flammable', 'group:flammable'},
 })
 
 minetest.register_craft({
