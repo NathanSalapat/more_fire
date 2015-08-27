@@ -10,12 +10,15 @@ more_fire = {}
 -- formspecs
 more_fire.embers_formspec =
 'size[8,6.75]'..
-default.gui_bg..
-default.gui_bg_img..
 default.gui_slots..
 'listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]'..
-'background[5,5;1,1;more_fire_campfire_inactive.png;true]'..
-'list[current_name;fuel;1,1.5;1,1;]'..
+'background[8,6.75;0,0;more_fire_campfire_bg.png;true]'..
+'label[2,.75;< Add More Wood]'..
+'label[1.25,2; Cook Something >]'..
+'list[current_name;fuel;1,.5;1,1;]'..
+'list[current_name;src;4,1.75;1,1;]'..
+'image[5,1.75;1,1;gui_furnace_arrow_bg.png^[transformR270]'..
+'list[current_name;dst;6,1.75;2,1;]'..
 'list[current_player;main;0,2.75;8,1;]'..
 'list[current_player;main;0,4;8,3;8]'..
 default.get_hotbar_bg(0,2.75)

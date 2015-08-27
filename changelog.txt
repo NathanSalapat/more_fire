@@ -1,3 +1,6 @@
+8-26-15:
+You can finally cook in the fires, there seems to be a little bug yet in the arrow showing the progress of the cooking, but mechanics all seem to work alright.
+
 6-3-15:
 Campfires and embers now have particles, smoke for the embers, and little sparks for the fires. Also lava now spawns little lava particles, the particles do nothing other than add a little visual effect.
 

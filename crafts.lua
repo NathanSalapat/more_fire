@@ -25,8 +25,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'more_fire:embers 1',
 	recipe = {
-		{'', '', ''},
-		{'default:stick', 'default:torch', 'default:stick'},
+		{'group:kindling', 'default:torch', 'group:kindling'},
 		{'group:wood', 'group:wood', 'group:wood'},
 	}
 })
@@ -48,17 +47,24 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:torch 4',
+	output = 'more_fire:torch_weak 4',
 	recipe = {
-		{'more_fire:charcoal'},
-		{'group:stick'},
+		{'group:kindling', 'group:kindling', 'group:kindling'},
+		{'group:kindling', 'group:stick', 'group:kindling'},
+		{'', 'group:stick', ''}
 	}
 })
 
 minetest.register_craft({
 	type = 'shapeless',
+	output = 'default:torch',
+	recipe = {'more_fire:torch_weak', 'group:coal'},
+})
+
+minetest.register_craft({
+	type = 'shapeless',
 	output = 'more_fire:kindling 1',
-	recipe = {'group:stick', 'group:wood', 'group:flammable', 'group:flammable'},
+	recipe = {'group:kindling', 'group:wood', 'group:kindling', 'group:kindling', 'group:kindling'},
 })
 
 minetest.register_craft({
@@ -107,14 +113,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'more_fire:marker 1',
-	recipe = {
-		{'more_fire:torch_stub', 'more_fire:torch_stub', 'more_fire:torch_stub'}
-		
-	}
-})
-
 -- cooking recipes
 minetest.register_craft({
 	type = 'cooking',
@@ -124,8 +122,9 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = 'cooking',
-	recipe = 'default:stick',
-	output = 'more_fire:marker'
+	recipe = 'default:grass_1',
+	output = 'more_fire:dried_grass',
+	cooktime = 1,
 })
 
 -- fuel recipes

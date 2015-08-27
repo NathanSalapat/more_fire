@@ -41,12 +41,56 @@ minetest.register_node(':default:torch', {
 		wall_bottom = {-0.1, -0.5   , -0.1, 0.1, 0.0625, 0.1},
 		wall_side   = {-0.35, -0.5  , -0.1, -0.5, 0.0625, 0.1},
 	},
-	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, hot = 2},
+	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, hot = 2, kindling=1},
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		if finite_torches == true then
 			local timer = minetest.get_node_timer(pos)
 			timer:start(960)
+		end
+	end,
+	on_timer = function(pos, elapsed)
+		local timer = minetest.get_node_timer(pos)
+		local node = minetest.get_node(pos)
+		minetest.swap_node(pos, {name = 'more_fire:torch_stub', param2 = node.param2})
+		timer:stop()
+	end,
+})
+
+minetest.register_node('more_fire:torch_weak', {
+	description = 'Weak Torch',
+	drawtype = 'nodebox',
+	tiles = {
+		{name = 'more_fire_torch_top.png'},
+		{name = 'more_fire_torch_bottom.png'},
+		{name = 'more_fire_torch_side.png'},
+	},
+	inventory_image = 'more_fire_torch_inv.png',
+	wield_image = 'more_fire_torch_inv.png',
+	paramtype = 'light',
+	paramtype2 = 'wallmounted',
+	sunlight_propagates = true,
+	is_ground_content = false,
+	walkable = false,
+	light_source = LIGHT_MAX - 6,
+	node_box = {
+		type = 'wallmounted',
+		wall_top    = {-0.0625, -0.0625, -0.0625, 0.0625, 0.5   , 0.0625},
+		wall_bottom = {-0.0625, -0.5   , -0.0625, 0.0625, 0.0625, 0.0625},
+		wall_side   = {-0.5   , -0.5   , -0.0625, -0.375, 0.0625, 0.0625},
+	},
+	selection_box = {
+		type = 'wallmounted',
+		wall_top    = {-0.1, -0.05, -0.1, 0.1, 0.5   , 0.1},
+		wall_bottom = {-0.1, -0.5   , -0.1, 0.1, 0.0625, 0.1},
+		wall_side   = {-0.35, -0.5  , -0.1, -0.5, 0.0625, 0.1},
+	},
+	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, hot = 2, kindling=1},
+	sounds = default.node_sound_wood_defaults(),
+	on_construct = function(pos)
+		if finite_torches == true then
+			local timer = minetest.get_node_timer(pos)
+			timer:start(480)
 		end
 	end,
 	on_timer = function(pos, elapsed)
@@ -84,7 +128,7 @@ minetest.register_node('more_fire:torch_stub', {
 		wall_bottom = {-0.1, -0.5   , -0.1, 0.1, -0.2, 0.1},
 		wall_side   = {-0.35, -0.5  , -0.1, -0.5, -0.2, 0.1},
 	},
-	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, not_in_creative_inventory =1},
+	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, not_in_creative_inventory = 1, kindling=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 	
@@ -113,7 +157,9 @@ minetest.register_node('more_fire:kindling', {
 	on_construct = function(pos)
 	 		local meta = minetest.env:get_meta(pos)
 	 		local inv = meta:get_inventory()
-			inv:set_size('fuel', 4)
+			inv:set_size('fuel', 1)
+			inv:set_size("src", 1)
+			inv:set_size("dst", 2)
 		end,
 })
 
@@ -141,12 +187,18 @@ minetest.register_node('more_fire:embers', {
 			meta:set_string('infotext', 'Campfire');
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 1)
+			inv:set_size("src", 1)
+			inv:set_size("dst", 2)
 			timer:start(180)
 		end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
-			if not inv:is_empty('fuel') then
+			if not inv:is_empty("fuel") then
+				return false
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
 				return false
 			end
 			return true
@@ -186,19 +238,24 @@ minetest.register_node('more_fire:campfire', {
 	damage_per_second = 1,
 	light_source = 14,
 	is_ground_content = true,
+	drop = 'more_fire:charcoal',
 	groups = {cracky=2,hot=2,attached_node=1,igniter=1,not_in_creative_inventory=1},
 	selection_box = {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
-	can_dig = function(pos,player)
-			local meta = minetest.env:get_meta(pos);
+	can_dig = function(pos, player)
+			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
-			if not inv:is_empty('fuel') then
+			if not inv:is_empty("fuel") then
 				return false
-				end
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
+				return false
+			end
 			return true
-			end,
+		end,
 			get_staticdata = function(self)
 end,
 })
@@ -222,11 +279,17 @@ minetest.register_node('more_fire:kindling_contained', {
 		local meta = minetest.env:get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size('fuel', 4)
+		inv:set_size("src", 1)
+		inv:set_size("dst", 2)
 	end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
-			if not inv:is_empty('fuel') then
+			if not inv:is_empty("fuel") then
+				return false
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
 				return false
 			end
 			return true
@@ -257,13 +320,18 @@ minetest.register_node('more_fire:embers_contained', {
 			meta:set_string('infotext', 'Campfire');
 			local inv = meta:get_inventory()
 			inv:set_size('fuel', 4)
+			inv:set_size("src", 1)
+			inv:set_size("dst", 2)
 			timer:start(190)
-			print 'called the on_construct function.'
 		end,
 	can_dig = function(pos, player)
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
-			if not inv:is_empty('fuel') then
+			if not inv:is_empty("fuel") then
+				return false
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
 				return false
 			end
 			return true
@@ -309,14 +377,18 @@ minetest.register_node('more_fire:campfire_contained', {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
-	can_dig = function(pos,player)
-			local meta = minetest.env:get_meta(pos);
+	can_dig = function(pos, player)
+			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
-			if not inv:is_empty('fuel') then
+			if not inv:is_empty("fuel") then
 				return false
-				end
+			elseif not inv:is_empty("dst") then
+				return false
+			elseif not inv:is_empty("src") then
+				return false
+			end
 			return true
-			end,
+		end,
 			get_staticdata = function(self)
 	end,
 })
@@ -509,18 +581,3 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 		end,
 })
 
-minetest.register_node('more_fire:marking', {
-	description = 'Nathan is really cool ;)',
-	paramtype = 'light',
-	paramtype2 = 'facedir',
-	tiles = {'more_fire_mark.png'},
-	drawtype = 'mesh',
-	mesh = 'more_fire_mark.obj',
-	selection_box = {
-		type = 'fixed',
-		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4, 0.5}, -- Right, Bottom, Back, Left, Top, Front
-		},
-	walkable = false,
-	groups = {choppy = 2, dig_immediate = 3, attached_node = 1, not_in_creative_inventory=1},
-	drop = '',
-})

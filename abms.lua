@@ -3,61 +3,82 @@ minetest.register_abm({  -- Controls non-contained fire
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local meta = minetest.env:get_meta(pos)
-		for i, name in ipairs({
-		'fuel_totaltime',
-		'fuel_time',
-		}) do
-		if meta:get_string(name) == '' then
-			meta:set_float(name, 5.0)
-			end
-		end
 		local meta = minetest.get_meta(pos)
+		local fuel_time = meta:get_float("fuel_time") or 0
+		local src_time = meta:get_float("src_time") or 0
+		local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
 		local inv = meta:get_inventory()
+		local srclist = inv:get_list("src")
+		local cooked = nil
+		if srclist then
+			cooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		end
 		local was_active = false
-		if meta:get_float('fuel_time') < meta:get_float('fuel_totaltime') then
+		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
 			was_active = true
-			meta:set_float('fuel_time', meta:get_float('fuel_time') + 0.25)
-			end
-		if meta:get_float('fuel_time') < meta:get_float('fuel_totaltime') then
-			minetest.sound_play({name='fire_small'},{gain=0.07},
-			{loop=true})
-			local percent = math.floor(meta:get_float('fuel_time') /
-			meta:get_float('fuel_totaltime') * 100)
-			meta:set_string('infotext','Campfire active: '..percent..'%')
-			minetest.swap_node(pos, {name = 'more_fire:campfire'})
-			meta:set_string('formspec',
-			'size[8,6.75]'..
-			default.gui_bg..
-			default.gui_slots..
-			'background[5,5;1,1;more_fire_campfire_active.png;true]'..
-			'list[current_name;fuel;1,1.5;1,1;]'..
-			'list[current_player;main;0,2.75;8,1;]'..
-			'list[current_player;main;0,4;8,3;8]')
-			return
-			end
-			local fuel = nil
-			local fuellist = inv:get_list('fuel')
-			if fuellist then
-				fuel = minetest.get_craft_result({method = 'fuel', width = 1, items = fuellist})
-			end
-			if fuel.time <= 0 then
-			local node = minetest.get_node(pos)
-				if node.name == 'more_fire:campfire' then
-					meta:set_string('infotext','Put more wood on the fire!')
-					minetest.swap_node(pos, {name = 'more_fire:embers'})
-					local timer = minetest.get_node_timer(pos)
-					meta:set_string('formspec', more_fire.embers_formspec)
-					timer:start(180)
+			meta:set_float("fuel_time", meta:get_float("fuel_time") + 0.25)
+			meta:set_float("src_time", meta:get_float("src_time") + 0.25)
+			if cooked and cooked.item and meta:get_float("src_time") >= cooked.time then
+				if inv:room_for_item("dst",cooked.item) then
+					inv:add_item("dst", cooked.item)
+					local srcstack = inv:get_stack("src", 1)
+					srcstack:take_item()
+					inv:set_stack("src", 1, srcstack)
+				else
+					print("Could not insert '"..cooked.item:to_string().."'")
 				end
+				meta:set_string("src_time", 0)
+			end
+		end
+
+		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
+			minetest.sound_play({name="campfire_small"},{pos=pos}, {max_hear_distance = 1},{loop=true},{gain=0.009})
+			local percent = math.floor(meta:get_float("fuel_time") /
+			meta:get_float("fuel_totaltime") * 100)
+			meta:set_string("infotext","Campfire active: "..percent.."%")
+			minetest.swap_node(pos, {name = 'more_fire:campfire'})
 			return
 		end
-		meta:set_string('fuel_totaltime', fuel.time)
-		meta:set_string('fuel_time', 0)
-		local stack = inv:get_stack('fuel', 1)
+		
+		local cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		local cookable = true
+		if cooked.time == 0 then
+			cookable = false
+		end
+		
+		local item_state = ''
+		local item_percent = 0
+		if cookable then
+			item_percent =  math.floor(src_time / cooked.time * 100)
+			item_state = item_percent .. "%"
+		end
+		
+		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
+
+		local fuel = nil
+		local cooked = nil
+		local fuellist = inv:get_list("fuel")
+		local srclist = inv:get_list("src")
+		if srclist then
+			cooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		end
+		
+		if fuellist then
+			fuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+		end
+		
+		if fuel.time <= 0 then
+			meta:set_string("infotext","The campfire is out.")
+			minetest.swap_node(pos, {name = 'more_fire:embers'})
+			meta:set_string("formspec", more_fire.fire_formspec(item_percent))
+			return
+		end
+		meta:set_string("fuel_totaltime", fuel.time)
+		meta:set_string("fuel_time", 0)
+		local stack = inv:get_stack("fuel", 1)
 		stack:take_item()
-		inv:set_stack('fuel', 1, stack)
-end,
+		inv:set_stack("fuel", 1, stack)
+	end,
 })
 
 minetest.register_abm({  -- Controls the contained fires.
@@ -65,62 +86,85 @@ minetest.register_abm({  -- Controls the contained fires.
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local meta = minetest.env:get_meta(pos)
-		for i, name in ipairs({
-		'fuel_totaltime',
-		'fuel_time',
-		}) do
-		if meta:get_string(name) == '' then
-			meta:set_float(name, 0.0)
-			end
-		end
 		local meta = minetest.get_meta(pos)
+		local meta = minetest.get_meta(pos)
+		local fuel_time = meta:get_float("fuel_time") or 0
+		local src_time = meta:get_float("src_time") or 0
+		local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
 		local inv = meta:get_inventory()
+		local srclist = inv:get_list("src")
+		local cooked = nil
+		if srclist then
+			cooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		end
 		local was_active = false
-		if meta:get_float('fuel_time') < meta:get_float('fuel_totaltime') then
+		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
 			was_active = true
-			meta:set_float('fuel_time', meta:get_float('fuel_time') + 0.25)
-			end
-		if meta:get_float('fuel_time') < meta:get_float('fuel_totaltime') then
-			minetest.sound_play({name='fire_small'},{gain=0.07},
-			{loop=true})
-			local percent = math.floor(meta:get_float('fuel_time') /
-			meta:get_float('fuel_totaltime') * 100)
-			meta:set_string('infotext','Campfire active: '..percent..'%')
-			minetest.swap_node(pos, {name = 'more_fire:campfire_contained'})
-			meta:set_string('formspec',
-			'size[8,6.75]'..
-			default.gui_bg..
-			default.gui_slots..
-			'background[5,5;1,1;more_fire_campfire_active.png;true]'..
-			'list[current_name;fuel;1,1.5;1,1;]'..
-			'list[current_player;main;0,2.75;8,1;]'..
-			'list[current_player;main;0,4;8,3;8]')
-			return
-			end
-			local fuel = nil
-			local fuellist = inv:get_list('fuel')
-			if fuellist then
-				fuel = minetest.get_craft_result({method = 'fuel', width = 1, items = fuellist})
-			end
-			if fuel.time <= 0 then
-				local node = minetest.get_node(pos)
-				if node.name == 'more_fire:campfire_contained' then
-					meta:set_string('infotext','Put more wood on the fire!')
-					minetest.swap_node(pos, {name = 'more_fire:embers_contained'})
-					meta:set_string('formspec', more_fire.embers_formspec)
-					local timer = minetest.get_node_timer(pos)
-					timer:start(190)
+			meta:set_float("fuel_time", meta:get_float("fuel_time") + 0.25)
+			meta:set_float("src_time", meta:get_float("src_time") + 0.25)
+			if cooked and cooked.item and meta:get_float("src_time") >= cooked.time then
+				if inv:room_for_item("dst",cooked.item) then
+					inv:add_item("dst", cooked.item)
+					local srcstack = inv:get_stack("src", 1)
+					srcstack:take_item()
+					inv:set_stack("src", 1, srcstack)
+				else
+					print("Could not insert '"..cooked.item:to_string().."'")
 				end
+				meta:set_string("src_time", 0)
+			end
+		end
+
+		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
+			minetest.sound_play({name="campfire_small"},{pos=pos}, {max_hear_distance = 1},{loop=true},{gain=0.009})
+			local percent = math.floor(meta:get_float("fuel_time") /
+			meta:get_float("fuel_totaltime") * 100)
+			meta:set_string("infotext","Campfire active: "..percent.."%")
+			minetest.swap_node(pos, {name = 'more_fire:campfire_contained'})
 			return
 		end
-		meta:set_string('fuel_totaltime', fuel.time)
-		meta:set_string('fuel_time', 0)
-		local stack = inv:get_stack('fuel', 1)
+		
+		local cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		local cookable = true
+		if cooked.time == 0 then
+			cookable = false
+		end
+		
+		local item_state = ''
+		local item_percent = 0
+		if cookable then
+			item_percent =  math.floor(src_time / cooked.time * 100)
+			item_state = item_percent .. "%"
+		end
+		
+		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
+
+		local fuel = nil
+		local cooked = nil
+		local fuellist = inv:get_list("fuel")
+		local srclist = inv:get_list("src")
+		if srclist then
+			cooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
+		end
+		
+		if fuellist then
+			fuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+		end
+		
+		if fuel.time <= 0 then
+			meta:set_string("infotext","The campfire is out.")
+			minetest.swap_node(pos, {name = 'more_fire:embers_contained'})
+			meta:set_string("formspec", more_fire.embers_formspec)
+			return
+		end
+		meta:set_string("fuel_totaltime", fuel.time)
+		meta:set_string("fuel_time", 0)
+		local stack = inv:get_stack("fuel", 1)
 		stack:take_item()
-		inv:set_stack('fuel', 1, stack)
-end,
+		inv:set_stack("fuel", 1, stack)
+	end,
 })
+
 
 minetest.register_abm({ --smoke for embers
 	nodenames = {'more_fire:embers', 'more_fire:embers_contained'},

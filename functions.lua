@@ -6,26 +6,23 @@ function default.get_hotbar_bg(x,y)
 	return out
 end
 
-function more_fire.campfire(pos, percent, item_percent)
+function more_fire.fire_formspec(item_percent)
 	local formspec =
-	'size[8,6.75]'..
-	default.gui_bg..
-	default.gui_bg_img..
-	default.gui_slots..
-	'background[5,5;1,1;more_fire_campfire_active.png;true]'..
-	'list[current_name;fuel;1,1.5;1,1;]'..
-	'list[current_player;main;0,2.75;8,1;]'..
-	'list[current_player;main;0,4;8,3;8]'..
-	default.get_hotbar_bg(0,2.75)
+		'size[8,6.75]'..
+		default.gui_slots..
+		'listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]'..
+		'background[8,6.75;0,0;more_fire_campfire_bg.png;true]'..
+		'label[2,.75;< Add More Wood]'..
+		'label[1.25,2; Cook Something >]'..
+		'list[current_name;fuel;1,.5;1,1;]'..
+		'list[current_name;src;4,1.75;1,1;]'..
+		'image[5,1.75;1,1;gui_furnace_arrow_bg.png^[lowpart:'..
+		(item_percent)..':gui_furnace_arrow_fg.png^[transformR270]'..
+		'list[current_name;dst;6,1.75;2,1;]'..
+		'list[current_player;main;0,2.75;8,1;]'..
+		'list[current_player;main;0,4;8,3;8]'..
+		default.get_hotbar_bg(0,2.75)
 	return formspec
-end
-
-function more_fire.get_campfire_formspec(pos, percent)
-	local meta = minetest.get_meta(pos)local inv = meta:get_inventory()
-	local fuellist = inv:get_list('fuel')
-	if fuellist then
-		end
-	return more_fire.campfire(pos, percent, item_percent)
 end
 
 function burn(pointed_thing) --kindling doesn't always start from the first spark
