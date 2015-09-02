@@ -52,8 +52,6 @@ minetest.register_abm({  -- Controls non-contained fire
 			item_percent =  math.floor(src_time / cooked.time * 100)
 			item_state = item_percent .. "%"
 		end
-		
-		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
 
 		local fuel = nil
 		local cooked = nil
@@ -78,6 +76,7 @@ minetest.register_abm({  -- Controls non-contained fire
 		local stack = inv:get_stack("fuel", 1)
 		stack:take_item()
 		inv:set_stack("fuel", 1, stack)
+		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
 	end,
 })
 
@@ -136,8 +135,6 @@ minetest.register_abm({  -- Controls the contained fires.
 			item_percent =  math.floor(src_time / cooked.time * 100)
 			item_state = item_percent .. "%"
 		end
-		
-		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
 
 		local fuel = nil
 		local cooked = nil
@@ -162,6 +159,7 @@ minetest.register_abm({  -- Controls the contained fires.
 		local stack = inv:get_stack("fuel", 1)
 		stack:take_item()
 		inv:set_stack("fuel", 1, stack)
+		meta:set_string("formspec", more_fire.fire_formspec(item_percent))
 	end,
 })
 
