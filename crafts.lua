@@ -108,12 +108,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = 'shapeless',
-	output = 'more_fire:lighter 1',
-	recipe = {'more_fire:flintstone', 'default:steel_ingot'}
-})
-
-minetest.register_craft({
 	output = 'more_fire:oil_lamp_off 1',
 	recipe = {
 		{'more_fire:oil_lamp_table_off'}
@@ -124,6 +118,15 @@ minetest.register_craft({
 	output = 'more_fire:oil_lamp_table_off 1',
 	recipe = {
 		{'more_fire:oil_lamp_off'}
+	}
+})
+
+minetest.register_craft({
+	output = 'more_fire:lighter',
+	recipe = {
+		{'','','group:wood'},
+		{'','default:flint',''},
+		{'default:steel_ingot','',''},
 	}
 })
 

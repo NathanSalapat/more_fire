@@ -1,18 +1,3 @@
-minetest.override_item('default:gravel', {
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				items = {'more_fire:flintstone'},
-				rarity = 15,
-			},
-			{
-				items = {'default:gravel'},
-			}
-		}
-	},
-})
-
 minetest.register_node(':default:torch', {
 	description = 'Torch',
 	drawtype = 'nodebox',
@@ -155,12 +140,12 @@ minetest.register_node('more_fire:kindling', {
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },  
 		},
 	on_construct = function(pos)
-	 		local meta = minetest.env:get_meta(pos)
-	 		local inv = meta:get_inventory()
-			inv:set_size('fuel', 1)
-			inv:set_size("src", 1)
-			inv:set_size("dst", 2)
-		end,
+		local meta = minetest.env:get_meta(pos)
+		local inv = meta:get_inventory()
+		inv:set_size('fuel', 4)
+		inv:set_size("src", 1)
+		inv:set_size("dst", 2)
+	end,
 })
 
 minetest.register_node('more_fire:embers', {
@@ -172,7 +157,7 @@ minetest.register_node('more_fire:embers', {
 	wield_image = 'more_fire_campfire.png',
 	walkable = false,
 	is_ground_content = true,
-	groups = {dig_immediate=3, flammable=1,},
+	groups = {dig_immediate=3, flammable=1,not_in_creative_inventory=1},
 	paramtype = 'light',
 	light_source = 5,
 	drop = 'more_fire:kindling',
@@ -282,18 +267,6 @@ minetest.register_node('more_fire:kindling_contained', {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 2)
 	end,
-	can_dig = function(pos, player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			if not inv:is_empty("fuel") then
-				return false
-			elseif not inv:is_empty("dst") then
-				return false
-			elseif not inv:is_empty("src") then
-				return false
-			end
-			return true
-		end,
 })
 
 minetest.register_node('more_fire:embers_contained', {
