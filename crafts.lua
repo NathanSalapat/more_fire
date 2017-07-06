@@ -70,15 +70,11 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = 'shapeless',
 	output = 'more_fire:kindling 1',
-	recipe = {'group:kindling', 'group:wood', 'group:kindling', 'group:kindling', 'group:kindling'},
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'more_fire:kindling 1',
-	recipe = {'group:flammable', 'group:wood', 'group:flammable', 'group:flammable', 'group:flammable'},
+	recipe = {
+      {'group:kindling', '', 'group:kindling'},
+      {'group:kindling', 'group:wood', 'group:kindling'},
+      }
 })
 
 minetest.register_craft({

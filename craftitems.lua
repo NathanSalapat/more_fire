@@ -14,9 +14,3 @@ minetest.register_craftitem('more_fire:dried_grass', {
 	inventory_image = 'more_fire_grass_dried.png',
 	groups = {kindling=1}
 })
-
-minetest.register_craftitem('more_fire:kindling', {
-	description = 'Kindling',
-	inventory_image = 'more_fire_kindling.png',
-	groups = {flammable=1, kindling=1, stick=1}
-})

@@ -103,7 +103,7 @@ minetest.register_node('more_fire:torch_stub', {
 	walkable = false,
 	node_box = {
 		type = 'wallmounted',
-		wall_top    = {-0.0625, 0.2, -0.0625, 0.0625, 0.5   , 0.0625}, 
+		wall_top    = {-0.0625, 0.2, -0.0625, 0.0625, 0.5   , 0.0625},
 		wall_bottom = {-0.0625, -0.5   , -0.0625, 0.0625, -0.2, 0.0625},
 		wall_side   = {-0.5   , -0.5   , -0.0625, -0.375, -0.2, 0.0625},
 	},
@@ -116,7 +116,7 @@ minetest.register_node('more_fire:torch_stub', {
 	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, not_in_creative_inventory = 1, kindling=1},
 	sounds = default.node_sound_wood_defaults(),
 })
-	
+
 minetest.register_node('more_fire:charcoal_block', {
 	description = 'Charcoal Block',
 	tiles = {'more_fire_charcoal_block.png'},
@@ -137,10 +137,10 @@ minetest.register_node('more_fire:kindling', {
 	paramtype = 'light',
 	selection_box = {
 		type = 'fixed',
-		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },  
+		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size('fuel', 4)
 		inv:set_size("src", 1)
@@ -166,7 +166,7 @@ minetest.register_node('more_fire:embers', {
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
 	on_construct = function(pos)
-			local meta = minetest.env:get_meta(pos)
+			local meta = minetest.get_meta(pos)
 			local timer = minetest.get_node_timer(pos)
 			meta:set_string('formspec', more_fire.embers_formspec)
 			meta:set_string('infotext', 'Campfire');
@@ -254,14 +254,14 @@ minetest.register_node('more_fire:kindling_contained', {
 	wield_image = 'more_fire_kindling.png',
 	walkable = false,
 	is_ground_content = true,
-	groups = {dig_immediate=3,flammable=1},
+	groups = {dig_immediate=3, flammable=1},
 	paramtype = 'light',
 	selection_box = {
 		type = 'fixed',
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size('fuel', 4)
 		inv:set_size("src", 1)
@@ -287,7 +287,7 @@ minetest.register_node('more_fire:embers_contained', {
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
 	on_construct = function(pos)
-			local meta = minetest.env:get_meta(pos)
+			local meta = minetest.get_meta(pos)
 			local timer = minetest.get_node_timer(pos)
 			meta:set_string('formspec', more_fire.embers_formspec)
 			meta:set_string('infotext', 'Campfire');
@@ -383,7 +383,7 @@ minetest.register_node('more_fire:oil_lamp_on', {
 		},
 	on_timer = function(pos, itemstack)
 		local node = minetest.get_node(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
@@ -424,7 +424,7 @@ minetest.register_node('more_fire:oil_lamp_off', {
 		fixed = {-.2, -.4, -0.1, 0.2, .35, .5},
 		},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size('main', 8*4)
 		inv:set_size('fuel', 1)
@@ -436,7 +436,7 @@ minetest.register_node('more_fire:oil_lamp_off', {
 		meta:set_string('infotext', 'Oil Lantern')
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
 		local node = minetest.get_node(pos)
@@ -477,7 +477,7 @@ minetest.register_node('more_fire:oil_lamp_table_on', {
 		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},
 		},
 	on_timer = function(pos, itemstack)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
@@ -518,7 +518,7 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},
 		},
 	on_construct = function(pos)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size('main', 8*4)
 		inv:set_size('fuel', 1)
@@ -530,7 +530,7 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 		meta:set_string('infotext', 'Oil Lantern')
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
@@ -553,4 +553,3 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 			return true
 		end,
 })
-
