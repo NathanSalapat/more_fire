@@ -31,7 +31,7 @@ minetest.register_node(':default:torch', {
 	on_construct = function(pos)
 		if finite_torches == true then
 			local timer = minetest.get_node_timer(pos)
-			timer:start(960)
+			timer:start(minetest.settings:get("more_fire.torch_burn_time") or 960)
 		end
 	end,
 	on_timer = function(pos, elapsed)
@@ -75,7 +75,7 @@ minetest.register_node('more_fire:torch_weak', {
 	on_construct = function(pos)
 		if finite_torches == true then
 			local timer = minetest.get_node_timer(pos)
-			timer:start(480)
+			timer:start(minetest.settings:get("more_fire.torch_burn_time")/2 or 480)
 		end
 	end,
 	on_timer = function(pos, elapsed)
@@ -388,7 +388,7 @@ minetest.register_node('more_fire:oil_lamp_on', {
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
 			local fuelstack = inv:get_stack('fuel', 1)
-			timer:start(12*60)
+			timer:start(minetest.settings:get("more_fire.oillamp_burn_time") or 720)
 			fuelstack:take_item()
 			inv:set_stack('fuel', 1, fuelstack)
 			if inv:is_empty('fuel') then
@@ -482,7 +482,7 @@ minetest.register_node('more_fire:oil_lamp_table_on', {
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
 			local fuelstack = inv:get_stack('fuel', 1)
-			timer:start(12*60)
+			timer:start(minetest.settings:get("more_fire.oillamp_burn_time") or 720)
 			fuelstack:take_item()
 			inv:set_stack('fuel', 1, fuelstack)
 			if inv:is_empty('fuel') then

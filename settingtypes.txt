@@ -1,0 +1,2 @@
+more_fire.torch_burn_time (Burn time of new torches) int 960 100 10000
+more_fire.oillamp_burn_time (Burn time of oil lamp) int 720 100 10000
