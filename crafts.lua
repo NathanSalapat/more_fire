@@ -2,7 +2,7 @@ minetest.register_craft({ --recycle old torches
 	output = 'default:stick 1',
 	recipe = {
 		{'more_fire:torch_stub', 'more_fire:torch_stub', 'more_fire:torch_stub'},
-		{'more_fire:torch_stub', , },
+		{'more_fire:torch_stub', '', ''},
 	}
 })
 
