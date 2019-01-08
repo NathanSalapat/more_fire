@@ -1,8 +1,15 @@
-minetest.register_craftitem('more_fire:charcoal', {
-	description = 'Charcoal',
-	inventory_image = 'more_fire_charcoal_lump.png',
-	groups = {coal = 1}
-})
+
+-- check if charcoal already defined by mod ethereal
+if minetest.get_modpath("ethereal") then
+	minetest.override_item("ethereal:charcoal_lump",{groups={coal = 1}})
+	minetest.register_alias("more_fire:charcoal", "ethereal:charcoal_lump")
+else
+	minetest.register_craftitem('more_fire:charcoal', {
+		description = 'Charcoal',
+		inventory_image = 'more_fire_charcoal_lump.png',
+		groups = {coal = 1}
+	})
+end
 
 minetest.register_craftitem('more_fire:oil', {
 	description = 'lantern oil',
