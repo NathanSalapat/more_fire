@@ -2,7 +2,7 @@ minetest.register_craft({ --recycle old torches
 	output = 'default:stick 1',
 	recipe = {
 		{'more_fire:torch_stub', 'more_fire:torch_stub', 'more_fire:torch_stub'},
-		{'more_fire:torch_stub', , },
+		{'more_fire:torch_stub', '', ''},
 	}
 })
 
@@ -135,11 +135,13 @@ minetest.register_craft({
 })
 
 -- cooking recipes
-minetest.register_craft({
-	type = 'cooking',
-	recipe = 'group:tree',
-	output = 'more_fire:charcoal',
-})
+if not minetest.get_modpath("ethereal") then
+	minetest.register_craft({
+		type = 'cooking',
+		recipe = 'group:tree',
+		output = 'more_fire:charcoal',
+	})
+end
 
 minetest.register_craft({
 	type = 'cooking',
@@ -149,11 +151,13 @@ minetest.register_craft({
 })
 
 -- fuel recipes
-minetest.register_craft({
-	type = 'fuel',
-	recipe = 'more_fire:charcoal',
-	burntime = 35,
-})
+if not minetest.get_modpath("ethereal") then
+	minetest.register_craft({
+		type = 'fuel',
+		recipe = 'more_fire:charcoal',
+		burntime = 35,
+	})
+end
 
 minetest.register_craft({
 	type = 'fuel',
