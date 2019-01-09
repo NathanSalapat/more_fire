@@ -29,7 +29,7 @@ minetest.register_node(':default:torch', {
 	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, hot = 2, kindling=1},
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
-		if finite_torches == true then
+		if minetest.settings:get_bool('more_fire.finite_torches') == true then
 			local timer = minetest.get_node_timer(pos)
 			timer:start(minetest.settings:get("more_fire.torch_burn_time") or 960)
 		end
@@ -73,7 +73,7 @@ minetest.register_node('more_fire:torch_weak', {
 	groups = {choppy = 2, dig_immediate = 3, flammable = 1, attached_node = 1, hot = 2, kindling=1},
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
-		if finite_torches == true then
+		if minetest.settings:get_bool('more_fire.finite_torches') == true then
 			local timer = minetest.get_node_timer(pos)
 			timer:start(minetest.settings:get("more_fire.torch_burn_time")/2 or 480)
 		end

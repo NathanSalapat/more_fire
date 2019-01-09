@@ -19,7 +19,6 @@ CC0
 - fire
 - vessels
 
-
 #
 Items currently included:
 - Campfires
@@ -30,7 +29,3 @@ Items currently included:
 - charcoal, much like coal, but made by cooking wood
 - a smoke bomb
 - molotov cocktail
-
-#
-Planned:
-Cooking capabilities in the campfires.
