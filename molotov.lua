@@ -11,9 +11,9 @@ minetest.register_craftitem('more_fire:molotov_cocktail', {
 		on_place = function(itemstack, user, pointed_thing)
 			itemstack:take_item()
 			minetest.sound_play('more_fire_shatter', {gain = 1.0})
-			n = minetest.env:get_node(pointed_thing)
+			n = minetest.get_node(pointed_thing)
 if pointed_thing.type == 'node' then
-minetest.env:add_node(pointed_thing.above, {name='more_fire:napalm'})
+minetest.add_node(pointed_thing.above, {name='more_fire:napalm'})
 minetest.sound_play('more_fire_ignite', {pos,pos})
 end
   			 --Shattered glass Particles
@@ -62,7 +62,7 @@ local function throw_cocktail(item, player)
 	local dir = player:get_look_dir()
 	obj:setvelocity({x=dir.x*30, y=dir.y*30, z=dir.z*30})
 	obj:setacceleration({x=dir.x*-3, y=-dir.y^8*80-10, z=dir.z*-3})
-	if not minetest.setting_getbool('creative_mode') then
+	if not minetest.settings:get_bool('creative_mode') then
 		item:take_item()
 	end
 	return item
@@ -153,7 +153,7 @@ minetest.add_particlespawner({
 		texture = 'more_fire_spark.png',
 	})
 	if self.timer>0.2 then
-		local objs = minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1)
+		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= 'more_fire:molotov_entity' and obj:get_luaentity().name ~= '__builtin:item' then
@@ -163,14 +163,14 @@ minetest.add_particlespawner({
 							for dy=-3,3 do
 								for dz=-3,3 do
 									local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-									local n = minetest.env:get_node(pos).name
+									local n = minetest.get_node(pos).name
 									if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <= 20 then
 									minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-										minetest.env:set_node(p, {name='more_fire:napalm'})
+										minetest.set_node(p, {name='more_fire:napalm'})
 									else
-								--minetest.env:remove_node(p)
+								--minetest.remove_node(p)
 								minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-								minetest.env:set_node(p, {name='fire:basic_flame'})
+								minetest.set_node(p, {name='fire:basic_flame'})
 									end
 								end
 							end
@@ -185,14 +185,14 @@ minetest.add_particlespawner({
 						for dy=-2,2 do
 							for dz=-2,2 do
 								local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-								local n = minetest.env:get_node(pos).name
+								local n = minetest.get_node(pos).name
 								if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <= 20 then
 								minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-									minetest.env:set_node(p, {name='more_fire:napalm'})
+									minetest.set_node(p, {name='more_fire:napalm'})
 								else
-								--minetest.env:remove_node(p)
+								--minetest.remove_node(p)
 								minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-								minetest.env:set_node(p, {name='fire:basic_flame'})
+								minetest.set_node(p, {name='fire:basic_flame'})
 								end
 							end
 						end
@@ -211,14 +211,13 @@ minetest.add_particlespawner({
 					for dy=-1,1 do
 						for dz=-1,1 do
 							local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-							local n = minetest.env:get_node(pos).name
+							local n = minetest.get_node(pos).name
 							if minetest.registered_nodes[n].groups.flammable or math.random(1, 100) <= 20 then
-							 minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-								minetest.env:set_node(p, {name='more_fire:napalm'})
+							   minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
+                        minetest.set_node(p, {name='more_fire:naplam'})
 							else
-								--minetest.env:remove_node(p)
 								minetest.sound_play('more_fire_ignite', {pos = self.lastpos})
-								minetest.env:set_node(p, {name='fire:basic_flame'})
+								minetest.set_node(p, {name='fire:basic_flame'})
 							end
 						end
 					end
@@ -306,13 +305,13 @@ local r = 0-- Radius for destroying
 			for y = pos.y-r, pos.y+r, 1 do
 				for z = pos.z-r, pos.z+r, 1 do
 					local cpos = {x=x,y=y,z=z}
-					if minetest.env:get_node(cpos).name == 'more_fire:napalm' then
-				 minetest.env:set_node(cpos,{name='fire:basic_flame'})
+					if minetest.get_node(cpos).name == 'more_fire:napalm' then
+				 minetest.set_node(cpos,{name='fire:basic_flame'})
 					end
 					if math.random(0,1) == 1
-					or minetest.env:get_node(cpos).name == 'more_fire:napalm'
+					or minetest.get_node(cpos).name == 'more_fire:napalm'
 					then
-						minetest.env:remove_node(cpos)
+						minetest.remove_node(cpos)
 					end
 				end
 			end

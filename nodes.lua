@@ -146,6 +146,13 @@ minetest.register_node('more_fire:kindling', {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 2)
 	end,
+   on_ignite = function(pos, igniter)
+      local chance = math.random(3)
+      local node = minetest.get_node(pos)
+      if chance == 2 then
+         minetest.swap_node(pos, {name = 'more_fire:embers', param2 = node.param2})
+      end
+   end,
 })
 
 minetest.register_node('more_fire:embers', {
@@ -188,6 +195,8 @@ minetest.register_node('more_fire:embers', {
 			end
 			return true
 		end,
+   on_ignite = function(pos, igniter)
+   end,
 	on_timer = function(pos, elapsed)
 		local timer = minetest.get_node_timer(pos)
 		timer:stop()
@@ -230,19 +239,17 @@ minetest.register_node('more_fire:campfire', {
 		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
 		},
 	can_dig = function(pos, player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			if not inv:is_empty("fuel") then
-				return false
-			elseif not inv:is_empty("dst") then
-				return false
-			elseif not inv:is_empty("src") then
-				return false
-			end
-			return true
-		end,
-			get_staticdata = function(self)
-end,
+		local meta = minetest.get_meta(pos);
+		local inv = meta:get_inventory()
+		if not inv:is_empty("fuel") then
+			return false
+		elseif not inv:is_empty("dst") then
+			return false
+		elseif not inv:is_empty("src") then
+			return false
+		end
+		return true
+	end,
 })
 
 minetest.register_node('more_fire:kindling_contained', {
@@ -267,6 +274,13 @@ minetest.register_node('more_fire:kindling_contained', {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 2)
 	end,
+   on_ignite = function(pos, igniter)
+      local chance = math.random(3)
+      local node = minetest.get_node(pos)
+      if chance == 2 then
+         minetest.swap_node(pos, {name = 'more_fire:embers_contained', param2 = node.param2})
+      end
+   end,
 })
 
 minetest.register_node('more_fire:embers_contained', {
@@ -298,17 +312,19 @@ minetest.register_node('more_fire:embers_contained', {
 			timer:start(190)
 		end,
 	can_dig = function(pos, player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			if not inv:is_empty("fuel") then
-				return false
-			elseif not inv:is_empty("dst") then
-				return false
-			elseif not inv:is_empty("src") then
-				return false
-			end
-			return true
-		end,
+		local meta = minetest.get_meta(pos);
+		local inv = meta:get_inventory()
+		if not inv:is_empty("fuel") then
+			return false
+		elseif not inv:is_empty("dst") then
+			return false
+		elseif not inv:is_empty("src") then
+			return false
+		end
+		return true
+	end,
+   on_ignite = function(pos, igniter)
+   end,
 	on_timer = function(pos, elapsed)
 		local timer = minetest.get_node_timer(pos)
 		timer:stop()
@@ -319,15 +335,15 @@ minetest.register_node('more_fire:embers_contained', {
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local fuel = nil
-			local fuellist = inv:get_list('fuel')
-			if fuellist then
-				fuel = minetest.get_craft_result({method = 'fuel', width = 1, items = fuellist})
-			end
+		local fuellist = inv:get_list('fuel')
+		if fuellist then
+			fuel = minetest.get_craft_result({method = 'fuel', width = 1, items = fuellist})
+		end
 		if fuel.time <= 0 then
 			if inv:is_empty('fuel') then
 				timer:start(190)
-				end
 			end
+		end
 end,
 })
 
@@ -346,23 +362,21 @@ minetest.register_node('more_fire:campfire_contained', {
 	light_source = 14,
 	is_ground_content = true,
 	groups = {cracky=2,hot=2,attached_node=1,dig_immediate=3,not_in_creative_inventory=1},
-		selection_box = {
-		type = 'fixed',
-		fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
-		},
+	selection_box = {
+	type = 'fixed',
+	fixed = { -0.48, -0.5, -0.48, 0.48, 0.0, 0.48 },
+	},
 	can_dig = function(pos, player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			if not inv:is_empty("fuel") then
-				return false
-			elseif not inv:is_empty("dst") then
-				return false
-			elseif not inv:is_empty("src") then
-				return false
-			end
-			return true
-		end,
-			get_staticdata = function(self)
+		local meta = minetest.get_meta(pos);
+		local inv = meta:get_inventory()
+		if not inv:is_empty("fuel") then
+			return false
+		elseif not inv:is_empty("dst") then
+			return false
+		elseif not inv:is_empty("src") then
+			return false
+		end
+		return true
 	end,
 })
 
@@ -428,14 +442,15 @@ minetest.register_node('more_fire:oil_lamp_off', {
 		local inv = meta:get_inventory()
 		inv:set_size('main', 8*4)
 		inv:set_size('fuel', 1)
+      meta:set_string('infotext', 'Oil Lantern')
 		meta:set_string('formspec',
 			'size[8,6]'..
 			'label[2,.75;Add lantern oil for a bright flame.]' ..
-            'list[current_name;fuel;1,.5;1,1]'..
-            'list[current_player;main;0,2;8,4;]')
-		meta:set_string('infotext', 'Oil Lantern')
+         'list[current_name;fuel;1,.5;1,1]'..
+         'list[current_player;main;0,2;8,4;]')
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+      local node = minetest.get_node(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
@@ -447,8 +462,8 @@ minetest.register_node('more_fire:oil_lamp_off', {
 			meta:set_string('formspec',
 			'size[8,6]'..
 			'label[2,.75;keep filled with lantern oil for a bright flame.]' ..
-            'list[current_name;fuel;1,.5;1,1]'..
-            'list[current_player;main;0,2;8,4;]')
+         'list[current_name;fuel;1,.5;1,1]'..
+         'list[current_player;main;0,2;8,4;]')
 		end
 	end,
 	can_dig = function(pos, player)
@@ -477,6 +492,7 @@ minetest.register_node('more_fire:oil_lamp_table_on', {
 		fixed = {-.2, -.5, -0.2, 0.2, .25, .2},
 		},
 	on_timer = function(pos, itemstack)
+      local node = minetest.get_node(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
@@ -486,11 +502,11 @@ minetest.register_node('more_fire:oil_lamp_table_on', {
 			fuelstack:take_item()
 			inv:set_stack('fuel', 1, fuelstack)
 			if inv:is_empty('fuel') then
-				minetest.set_node(pos, {name = 'more_fire:oil_lamp_table_off'})
+				minetest.set_node(pos, {name = 'more_fire:oil_lamp_table_off', param2=node.param2})
 				end
 				timer:stop()
 		elseif inv:is_empty('fuel') then
-			minetest.set_node(pos, {name = 'more_fire:oil_lamp_table_off'})
+			minetest.set_node(pos, {name = 'more_fire:oil_lamp_table_off', param2=node.param2})
 			timer:stop()
 		end
 	end,
@@ -522,26 +538,27 @@ minetest.register_node('more_fire:oil_lamp_table_off', {
 		local inv = meta:get_inventory()
 		inv:set_size('main', 8*4)
 		inv:set_size('fuel', 1)
+      meta:set_string('infotext', 'Oil Lantern')
 		meta:set_string('formspec',
 			'size[8,6]'..
 			'label[2,.75;Add lantern oil for a bright flame.]' ..
-            'list[current_name;fuel;1,.5;1,1]'..
-            'list[current_player;main;0,2;8,4;]')
-		meta:set_string('infotext', 'Oil Lantern')
+         'list[current_name;fuel;1,.5;1,1]'..
+         'list[current_player;main;0,2;8,4;]')
 	end,
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+      local node = minetest.get_node(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local timer = minetest.get_node_timer(pos)
 		if inv:contains_item('fuel', 'more_fire:oil') then
-			minetest.swap_node(pos, {name = 'more_fire:oil_lamp_table_on'})
+			minetest.swap_node(pos, {name = 'more_fire:oil_lamp_table_on', param2=node.param2})
 			timer:start(12*60) --one oil unit will burn for 12 minutes
 			meta:set_string('infotext', 'Burning Oil Lamp')
 			meta:set_string('formspec',
 			'size[8,6]'..
 			'label[2,.75;keep filled with lantern oil for a bright flame.]' ..
-            'list[current_name;fuel;1,.5;1,1]'..
-            'list[current_player;main;0,2;8,4;]')
+         'list[current_name;fuel;1,.5;1,1]'..
+         'list[current_player;main;0,2;8,4;]')
 		end
 	end,
 	can_dig = function(pos, player)

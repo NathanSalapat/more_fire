@@ -7,7 +7,6 @@ default.gui_slots = 'listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]'
 
 more_fire = {}
 
-dofile(minetest.get_modpath('more_fire')..'/config.txt')
 dofile(minetest.get_modpath('more_fire')..'/functions.lua')
 dofile(minetest.get_modpath('more_fire')..'/abms.lua')
 dofile(minetest.get_modpath('more_fire')..'/nodes.lua')

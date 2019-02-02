@@ -1,4 +1,8 @@
-more_fire.torch_burn_time (Burn time of new torches) int 960 100 10000
-more_fire.oillamp_burn_time (Burn time of oil lamp) int 720 100 10000
+#How long in seconds a torch will burn.
+#Default is 960 seconds (16 minutes)
+more_fire.torch_burn_time (Burn time of new torches) int 960
+#How long in seconds a bottle of lamp oil will burn.
+#Default is 720 seconds (12 minutes)
+more_fire.oillamp_burn_time (Burn time of oil lamp) int 720
 more_fire.finite_torches (Should torches burn out?) bool true
 more_fire.pyromania (Enable molotov cocktails?) bool false

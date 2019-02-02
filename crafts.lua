@@ -123,15 +123,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = 'more_fire:lighter',
-	recipe = {
-		{'','','group:wood'},
-		{'','default:flint',''},
-		{'default:steel_ingot','',''},
-	}
-})
-
 -- cooking recipes
 if not minetest.get_modpath("ethereal") then
 	minetest.register_craft({

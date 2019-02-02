@@ -40,20 +40,6 @@ default.gui_slots..
 'list[current_player;main;0,4;8,3;8]'..
 default.get_hotbar_bg(0,2.75)
 
-function burn(pointed_thing) --kindling doesn't always start from the first spark
-	local ignite_chance = math.random(5)
-	if ignite_chance == 1
-		and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling_contained')
-		then
-			minetest.set_node(pointed_thing.under, {name = 'more_fire:embers_contained'})
-	elseif ignite_chance == 1
-		and string.find(minetest.get_node(pointed_thing.under).name, 'more_fire:kindling')
-		then
-			minetest.set_node(pointed_thing.under, {name = 'more_fire:embers'})
-	else --Do nothing
-	end
-end
-
 function smoke_particles(pos)
     minetest.add_particlespawner({
         amount = 1, -- how many particles do you want
