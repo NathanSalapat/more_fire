@@ -1,4 +1,0 @@
-default
-farming
-fire
-vessels

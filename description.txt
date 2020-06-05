@@ -1,1 +1,0 @@
-This is a Minetest mod that adds more/better fire related stuff.

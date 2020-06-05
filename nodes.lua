@@ -223,8 +223,7 @@ minetest.register_node('more_fire:campfire', {
 	description = 'Burning Campfire',
 	drawtype = 'mesh',
 	mesh = 'more_fire_campfire.obj',
-	tiles = {
-		{name='fire_basic_flame_animated.png', animation={type='vertical_frames', aspect_w=16, aspect_h=16, length=1}}, {name='more_fire_campfire_logs.png'}},
+	tiles = {{name='fire_basic_flame_animated.png', animation={type='vertical_frames', aspect_w=16, aspect_h=16, length=1}},{name='more_fire_campfire_logs.png'}},
 	inventory_image = 'more_fire_campfire.png',
 	wield_image = 'more_fire_campfire.png',
 	paramtype = 'light',
@@ -385,6 +384,7 @@ minetest.register_node('more_fire:oil_lamp_on', {
 	drawtype = 'mesh',
 	mesh = 'more_fire_lamp_wall.obj',
 	tiles = {'more_fire_lamp.png'},
+   use_alpha_texture = true,
 	groups = {choppy=2, dig_immediate=2, not_in_creative_inventory=1},
 	paramtype = 'light',
 	paramtype2 = 'facedir',

@@ -12,7 +12,6 @@ dofile(minetest.get_modpath('more_fire')..'/abms.lua')
 dofile(minetest.get_modpath('more_fire')..'/nodes.lua')
 dofile(minetest.get_modpath('more_fire')..'/craftitems.lua')
 dofile(minetest.get_modpath('more_fire')..'/crafts.lua')
-dofile(minetest.get_modpath('more_fire')..'/tools.lua')
 if minetest.settings:get_bool('more_fire.pyromania') then
 	dofile(minetest.get_modpath('more_fire')..'/molotov.lua')
 	dofile(minetest.get_modpath('more_fire')..'/smokebomb.lua')

@@ -1,3 +1,6 @@
+6-4-20:
+Code updates and cleaning. No new features.
+
 8-26-15:
 You can finally cook in the fires, there seems to be a little bug yet in the arrow showing the progress of the cooking, but mechanics all seem to work alright.
 
